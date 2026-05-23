@@ -1,0 +1,15 @@
+commit msg:
+
+git commit -m "chore: initialize backend architecture and project setup"
+
+git commit -m "feat: add MongoDB and Redis configuration"
+
+git commit -m "feat: implement assignment CRUD APIs"
+
+
+git commit -m "feat: add BullMQ queue and worker system"
+
+git commit -m "feat: integrate Gemini AI question generation"
+
+git commit -m "feat: implement realtime generation updates with Socket.IO"
+
