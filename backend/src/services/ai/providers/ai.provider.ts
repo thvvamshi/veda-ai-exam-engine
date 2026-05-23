@@ -21,7 +21,7 @@ const openrouter = new OpenAI({
 // Note: OpenRouter's free tier has limited models, so we can try multiple if needed
 const OPENROUTER_MODELS = process.env.OPENROUTER_MODEL
   ? [process.env.OPENROUTER_MODEL]
-  : ["openrouter/free",];
+  : ["openrouter/free", "deepseek/deepseek-v4-flash:free",];
 
 export class UnifiedAIProvider implements AIProvider {
   async generate(prompt: string) {
