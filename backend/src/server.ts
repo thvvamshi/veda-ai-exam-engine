@@ -1,10 +1,30 @@
 import http from "http";
+
 import app from "./app";
 
-const PORT = process.env.PORT || 5000;
+import { env } from "./config/env";
 
-const server = http.createServer(app);
+import { connectDB } from "./config/db";
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+import "./config/redis";
+
+import {
+  testGeminiConnection
+} from "./config/ai";
+
+const startServer = async () => {
+  await connectDB();
+
+  // await testGeminiConnection();      ##temporarily disabling gemini connection test to avoid delays in server startup. Will enable it once the connection is stable.
+
+  const server =
+    http.createServer(app);
+
+  server.listen(env.PORT, () => {
+    console.log(
+      `Server running on port ${env.PORT}`
+    );
+  });
+};
+
+startServer();

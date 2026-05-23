@@ -1,26 +1,72 @@
 import express from "express";
+
 import cors from "cors";
+
 import compression from "compression";
+
 import helmet from "helmet";
+
 import morgan from "morgan";
+
+import healthRoutes from "./routes/health.routes";
+
+import { errorMiddleware } from "./middleware/error.middleware";
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  }),
+);
 
-app.use(express.json());
+app.use(
+  express.json({
+    limit: "10mb",
+  }),
+);
+
+app.use(
+  express.urlencoded({
+    extended: true,
+    limit: "10mb",
+  }),
+);
 
 app.use(compression());
 
-app.use(helmet());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+  }),
+);
 
 app.use(morgan("dev"));
 
-app.get("/health", (_, res) => {
+// Routes
+app.use("/api/v1/health", healthRoutes);
+
+
+
+
+// Default Route
+app.get("/", (_req, res) => {
   res.json({
     success: true,
-    message: "Server running"
+    message: "Veda AI Backend API Running",
   });
 });
+
+// 404 Route Handler
+app.use((_req, res) => {
+  return res.status(404).json({
+    success: false,
+    message: "Route not found"
+  });
+});
+
+// Global Error Handler
+app.use(errorMiddleware);
 
 export default app;
