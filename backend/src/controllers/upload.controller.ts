@@ -8,17 +8,21 @@ export const uploadFile = async (
   res: Response,
 ) => {
   try {
-    // Check if file was uploaded successfully by multer
+    // validate that a file was uploaded by multer middleware
     if (!req.file) {
       return res.status(400).json(errorResponse("No file uploaded"));
     }
-    // Type assertion to access Cloudinary-specific properties added by multer-storage-cloudinary
+    // extract file details from multer's request object
     const file = req.file as Express.Multer.File & {
       path: string;
 
       filename: string;
     };
-    // file.path contains the URL to the uploaded file in Cloudinary
+    // validate Cloudinary upload result
+    if (!file.path || !file.filename) {
+      return res.status(500).json(errorResponse("Cloudinary upload failed"));
+    }
+    // successful response with file details
     return res.status(200).json(
       successResponse(
         {
@@ -38,7 +42,11 @@ export const uploadFile = async (
     );
   } catch (error) {
     console.error("File upload failed:", error);
-
+    // specific error handling for Multer file size limit
+    if (error instanceof Error && error.message.includes("File too large")) {
+      return res.status(400).json(errorResponse("File size exceeds limit"));
+    }
+    // generic error response for other cases
     return res.status(500).json(errorResponse("Failed to upload file"));
   }
 };

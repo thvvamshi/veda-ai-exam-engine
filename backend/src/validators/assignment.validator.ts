@@ -27,5 +27,5 @@ export const createAssignmentSchema = z.object({
 
   additionalInstructions: z.string().optional(),
 
-  uploadedFileUrl: z.string().nullable().optional(),
+  uploadedFileUrl: z.string().url().nullable().optional(),
 });
