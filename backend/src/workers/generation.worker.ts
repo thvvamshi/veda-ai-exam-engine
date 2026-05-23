@@ -48,8 +48,7 @@ new Worker(
       );
 
       // Build prompt for AI generation
-      const prompt = buildPrompt(assignment);
-
+      const prompt = await buildPrompt(assignment);
       // Generate questions using AI
       const generatedData = await generateQuestions(prompt);
 

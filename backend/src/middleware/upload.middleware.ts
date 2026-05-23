@@ -10,7 +10,9 @@ const storage = new CloudinaryStorage({
   params: async (req, file) => ({
     folder: "veda-ai-assignments",
 
-    resource_type: "auto",
+    resource_type: file.mimetype === "application/pdf" ? "raw" : "auto",
+
+    access_mode: "public",
 
     public_id: `${Date.now()}-${file.originalname
       .split(".")[0]
@@ -22,7 +24,7 @@ export const upload = multer({
   storage,
 
   limits: {
-    fileSize: 10 * 1024 * 1024,
+    fileSize: 30 * 1024 * 1024,
   },
 
   fileFilter: (req, file, cb) => {
