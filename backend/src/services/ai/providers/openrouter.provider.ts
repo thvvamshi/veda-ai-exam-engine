@@ -4,6 +4,7 @@ import { extractJson } from "../../../utils/extractJson";
 
 import { AIProvider } from "../types";
 
+// initialize OpenAI client with OpenRouter configuration
 const client = new OpenAI({
   apiKey: process.env.OPENROUTER_API_KEY,
 
@@ -12,25 +13,25 @@ const client = new OpenAI({
   timeout: 60000,
 });
 
-// first model is from OpenRouter (free)
-// second is OpenAI as fallback (paid, but more reliable)
-
 const MODELS = [
   process.env.OPENROUTER_MODEL || "google/gemma-2-9b-it:free",
 
   "openai/gpt-3.5-turbo",
 ];
 
+
+
 export class OpenRouterProvider implements AIProvider {
   async generate(prompt: string) {
     let lastError: any = null;
 
-    // Try each model in order until one succeeds
+
+
     for (const model of MODELS) {
       try {
         console.log(`Trying model: ${model}`);
 
-        // | Call OpenRouter API
+
         const completion = await client.chat.completions.create({
           model,
 
@@ -54,20 +55,20 @@ export class OpenRouterProvider implements AIProvider {
           max_tokens: 4000,
         });
 
-        // validate response structure
+
         const response = completion.choices?.[0]?.message?.content;
 
         if (!response) {
           throw new Error("Empty AI response received");
         }
 
-        // extract JSON from response
+
         const jsonString = extractJson(response);
 
-        // parse JSON and validate structure
+
         const parsedResponse = JSON.parse(jsonString);
 
-        // validate expected structure
+
         if (
           !parsedResponse.sections ||
           !Array.isArray(parsedResponse.sections)
@@ -75,20 +76,95 @@ export class OpenRouterProvider implements AIProvider {
           throw new Error("Invalid AI response structure");
         }
 
-        console.log(`Model succeeded: ${model}`);
 
-        // normalize difficulty levels to lowercase
         parsedResponse.sections = parsedResponse.sections.map(
           (section: any) => ({
             ...section,
 
-            questions: section.questions.map((question: any) => ({
-              ...question,
+            title: section.title || "Untitled Section",
 
-              difficulty: question.difficulty?.toLowerCase()?.trim(),
-            })),
+            instruction: section.instruction || "",
+
+            questions: Array.isArray(section.questions)
+              ? section.questions.map((question: any) => {
+
+                  question.questionText =
+                    question.questionText?.toString()?.trim() ||
+                    "Untitled Question";
+
+                  question.difficulty = question.difficulty
+                    ?.toLowerCase()
+                    ?.trim();
+
+                  if (
+                    !["easy", "medium", "hard"].includes(question.difficulty)
+                  ) {
+                    question.difficulty = "medium";
+                  }
+
+                  question.type = question.type?.toLowerCase()?.trim();
+                //   normalize question type, default to "short" if invalid
+                  const validTypes = [
+                    "mcq",
+                    "short",
+                    "long",
+                    "numerical",
+                    "diagram",
+                  ];
+
+                  if (!validTypes.includes(question.type)) {
+                    question.type = "short";
+                  }
+
+                //   normalize marks
+                  question.marks = Number(question.marks) || 1;
+                //   if marks is less than 1, default to 1
+                  if (question.type === "mcq") {
+                    // ensure options is an array of non-empty strings, max 4
+                    question.options = Array.isArray(question.options)
+                      ? question.options
+                          .filter(
+                            (option: any) =>
+                              typeof option === "string" &&
+                              option.trim() !== "",
+                          )
+                          .slice(0, 4)
+                      : [];
+                      
+                    //   if less than 4 options, fill the rest with placeholders
+                    while (question.options.length < 4) {
+                      question.options.push(
+                        `Option ${question.options.length + 1}`,
+                      );
+                    }
+
+                    // if correctAnswer is missing or not in options, default to first option
+                    if (
+                      !question.correctAnswer ||
+                      !question.options.includes(question.correctAnswer)
+                    ) {
+                      question.correctAnswer = question.options[0];
+                    }
+                  } else {
+
+                    // for non-MCQ questions, ensure options and correctAnswer are null/empty
+                    question.options = [];
+
+                    question.correctAnswer = null;
+                  }
+
+                  return question;
+                })
+              : [],
           }),
         );
+
+        // ensure answerKey is an array even if AI returns null or invalid format
+        parsedResponse.answerKey = Array.isArray(parsedResponse.answerKey)
+          ? parsedResponse.answerKey
+          : [];
+
+        console.log(`Model succeeded: ${model}`);
 
         return parsedResponse;
       } catch (error: any) {
@@ -96,14 +172,15 @@ export class OpenRouterProvider implements AIProvider {
 
         lastError = error;
 
-        // Define non-retryable errors that should skip remaining models
+        // define non-retryable errors that should mark the assignment as failed immediately
         continue;
       }
     }
 
-    // all models failed
+    // if we exhaust all models, throw a user-friendly error without exposing internal details
     console.error("All OpenRouter models failed");
-
+    
+    // map known error patterns to user-friendly messages without exposing internal details
     if (lastError?.status === 401) {
       throw new Error("Invalid OpenRouter API key");
     }
@@ -124,6 +201,7 @@ export class OpenRouterProvider implements AIProvider {
       throw new Error("OpenRouter model not found");
     }
 
+    // fallback generic error message without exposing internal details
     throw new Error(
       lastError?.message || "Failed to generate questions using OpenRouter",
     );

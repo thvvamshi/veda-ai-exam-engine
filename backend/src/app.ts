@@ -16,6 +16,8 @@ import assignmentRoutes from "./routes/assignment.routes";
 
 import generationRoutes from "./routes/generation.routes";
 
+import generatedPaperRoutes from "./routes/generatedPaper.routes";
+
 const app = express();
 
 app.use(
@@ -54,6 +56,8 @@ app.use("/api/v1/health", healthRoutes);
 app.use("/api/v1/assignments", assignmentRoutes);
 
 app.use("/api/v1/assignments", generationRoutes);
+
+app.use("/api/v1/generated-papers", generatedPaperRoutes);
 
 // Default Route
 app.get("/", (_req, res) => {

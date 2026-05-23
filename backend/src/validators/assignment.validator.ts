@@ -1,15 +1,31 @@
 import { z } from "zod";
 
 export const createAssignmentSchema = z.object({
-  title: z.string().min(3).max(200),
+  title: z.string().min(3),
 
-  dueDate: z.string().datetime(),
+  schoolName: z.string().optional(),
 
-  questionTypes: z.array(z.string()).min(1),
+  subject: z.string().optional(),
 
-  numberOfQuestions: z.number().positive(),
+  className: z.string().optional(),
 
-  totalMarks: z.number().positive(),
+  dueDate: z.string(),
+
+  questionTypes: z
+    .array(
+      z.object({
+        type: z.enum(["mcq", "short", "long", "numerical", "diagram"]),
+
+        count: z.number().min(1),
+
+        marks: z.number().min(1),
+      }),
+    )
+    .min(1),
 
   instructions: z.string().optional(),
+
+  additionalInstructions: z.string().optional(),
+
+  uploadedFileUrl: z.string().nullable().optional(),
 });

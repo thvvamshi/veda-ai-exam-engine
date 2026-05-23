@@ -1,71 +1,153 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
-const questionSchema = new mongoose.Schema({
-  questionText: {
-    type: String,
-    required: true,
-  },
-
-  difficulty: {
-    type: String,
-
-    enum: ["easy", "medium", "hard"],
-
-    required: true,
-  },
-
-  marks: {
-    type: Number,
-    required: true,
-  },
-
-  type: {
-    type: String,
-    required: true,
-  },
-});
-
-const sectionSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-
-  instruction: {
-    type: String,
-    required: true,
-  },
-
-  questions: [questionSchema],
-});
-
-const generatedPaperSchema = new mongoose.Schema(
+// subdocument schema for question types in assignment creation
+const questionSchema = new Schema(
   {
-    assignmentId: {
-      type: mongoose.Schema.Types.ObjectId,
+    questionText: {
+      type: String,
 
-      ref: "Assignment",
+      required: true,
+
+      trim: true,
+    },
+
+    difficulty: {
+      type: String,
+
+      required: true,
+
+      enum: ["easy", "medium", "hard"],
+    },
+
+    marks: {
+      type: Number,
+
+      required: true,
+
+      min: 1,
+    },
+
+    type: {
+      type: String,
+
+      required: true,
+
+      enum: ["mcq", "short", "long", "numerical", "diagram"],
+    },
+
+    // for MCQs
+    options: {
+      type: [String],
+
+      default: [],
+    },
+
+    // for answer key
+    correctAnswer: {
+      type: String,
+
+      default: null,
+    },
+  },
+
+  {
+    _id: false,
+  },
+);
+
+// schemas for generated paper sections and questions
+const sectionSchema = new Schema(
+  {
+    title: {
+      type: String,
 
       required: true,
     },
 
-    sections: [sectionSchema],
-
-    pdfUrl: {
+    instruction: {
       type: String,
-      default: null,
+
+      default: "",
+    },
+
+    questions: {
+      type: [questionSchema],
+
+      required: true,
     },
   },
+
   {
-    timestamps: true,
+    _id: false,
   },
 );
 
-generatedPaperSchema.index({
-  assignmentId: 1,
-});
+// schema for answer key
+const answerKeySchema = new Schema(
+  {
+    question: {
+      type: String,
+
+      required: true,
+    },
+
+    answer: {
+      type: String,
+
+      required: true,
+    },
+  },
+
+  {
+    _id: false,
+  },
+);
+
+// schemas for generated paper sections and questions
+const generatedPaperSchema = new Schema(
+  {
+    assignmentId: {
+      type: Schema.Types.ObjectId,
+
+      ref: "Assignment",
+
+      required: true,
+
+      unique: true,
+    },
+
+    sections: {
+      type: [sectionSchema],
+
+      required: true,
+    },
+
+    answerKey: {
+      type: [answerKeySchema],
+
+      default: [],
+    },
+  },
+
+  {
+    timestamps: true,
+
+    toJSON: {
+      virtuals: true,
+
+      versionKey: false,
+
+      transform: (_doc, ret) => {
+        ret.id = ret._id.toString();
+
+        delete ret._id;
+      },
+    },
+  },
+);
 
 export const GeneratedPaper = mongoose.model(
   "GeneratedPaper",
+
   generatedPaperSchema,
 );

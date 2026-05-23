@@ -1,50 +1,108 @@
 export const buildPrompt = (assignment: any) => {
+  const questionBreakdown = assignment.questionTypes
+    .map(
+      (q: any) =>
+        `
+Question Type: ${q.type}
+Number Of Questions: ${q.count}
+Marks Per Question: ${q.marks}
+`,
+    )
+    .join("\n");
+
   return `
-Generate a structured question paper.
+Generate a professional school question paper.
 
-Return ONLY valid JSON.
+Assignment Details:
 
-Do NOT return markdown.
+Title:
+${assignment.title}
 
-Format:
+School:
+${assignment.schoolName}
+
+Subject:
+${assignment.subject}
+
+Class:
+${assignment.className}
+
+Question Breakdown:
+${questionBreakdown}
+
+Instructions:
+${assignment.instructions}
+
+Additional Instructions:
+${assignment.additionalInstructions}
+
+IMPORTANT RULES:
+
+1. Return ONLY valid JSON
+2. Group similar questions into sections
+3. Every question must contain:
+   - questionText
+   - difficulty
+   - marks
+   - type
+
+4. For MCQ questions:
+   - generate EXACTLY 4 options
+   - options are mandatory
+   - correctAnswer is mandatory
+
+5. Difficulty must be:
+   - easy
+   - medium
+   - hard
+
+Expected JSON Format:
 
 {
   "sections": [
     {
-      "title": "",
-      "instruction": "",
+      "title": "Section A",
+
+      "instruction":
+        "Attempt all questions.",
+
       "questions": [
         {
-          "questionText": "",
-          "difficulty": "",
-          "marks": 0,
-          "type": ""
+          "questionText":
+            "What is electroplating?",
+
+          "difficulty":
+            "easy",
+
+          "marks":
+            1,
+
+          "type":
+            "mcq",
+
+          "options": [
+            "Metal coating process",
+            "Heating process",
+            "Cooling process",
+            "Magnetic process"
+          ],
+
+          "correctAnswer":
+            "Metal coating process"
         }
       ]
     }
+  ],
+
+  "answerKey": [
+    {
+      "question":
+        "What is electroplating?",
+
+      "answer":
+        "Metal coating process"
+    }
   ]
 }
-
-Requirements:
-- Create sections
-- Add questions
-- Add difficulty levels
-- Add marks
-- Make proper exam structure
-
-Assignment Title:
-${assignment.title}
-
-Question Types:
-${assignment.questionTypes.join(", ")}
-
-Number Of Questions:
-${assignment.numberOfQuestions}
-
-Total Marks:
-${assignment.totalMarks}
-
-Instructions:
-${assignment.instructions}
 `;
 };
