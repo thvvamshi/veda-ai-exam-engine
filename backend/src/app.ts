@@ -20,6 +20,8 @@ import generatedPaperRoutes from "./routes/generatedPaper.routes";
 
 import uploadRoutes from "./routes/upload.routes";
 
+import pdfRoutes from "./routes/pdf.routes";
+
 const app = express();
 
 app.use(
@@ -62,6 +64,9 @@ app.use("/api/v1/assignments", generationRoutes);
 app.use("/api/v1/generated-papers", generatedPaperRoutes);
 
 app.use("/api/v1/uploads", uploadRoutes);
+
+app.use("/api/v1/generated-papers", pdfRoutes);
+
 
 // Default Route
 app.get("/", (_req, res) => {
