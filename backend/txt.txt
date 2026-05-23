@@ -1,6 +1,5 @@
 commit msg:
 
-git commit -m "chore: initialize backend architecture and project setup"
 
 git commit -m "feat: add MongoDB and Redis configuration"
 

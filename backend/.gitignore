@@ -32,3 +32,6 @@ temp
 
 # TypeScript
 *.tsbuildinfo
+
+# txt files
+.txt
