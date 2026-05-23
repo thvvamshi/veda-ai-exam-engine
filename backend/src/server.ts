@@ -14,8 +14,10 @@ import "./workers/generation.worker";
 
 const startServer = async () => {
   await connectDB();
-
-  // await testGeminiConnection();      ##temporarily disabling gemini connection test to avoid delays in server startup. Will enable it once the connection is stable.
+    
+  // ##temporarily disabling gemini connection test to avoid delays in server startup.
+  //  Will enable it once the connection is stable.
+  // await testGeminiConnection();  
 
   const server = http.createServer(app);
 

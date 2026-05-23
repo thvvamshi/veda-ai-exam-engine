@@ -5,7 +5,7 @@ dotenv.config();
 const requiredEnvVariables = [
   "MONGO_URI",
   "REDIS_URL",
-  "GEMINI_API_KEY"
+  "OPENROUTER_API_KEY"
 ];
 
 requiredEnvVariables.forEach((key) => {
@@ -26,6 +26,6 @@ export const env = {
 
   REDIS_URL: process.env.REDIS_URL!,
 
-  GEMINI_API_KEY:
-    process.env.GEMINI_API_KEY!
+  OPENROUTER_API_KEY:
+    process.env.OPENROUTER_API_KEY!
 };

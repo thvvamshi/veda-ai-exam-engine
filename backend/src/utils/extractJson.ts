@@ -1,23 +1,11 @@
-export const extractJson = (
-  text: string
-) => {
-  const start =
-    text.indexOf("{");
+export const extractJson = (text: string) => {
+  const start = text.indexOf("{");
 
-  const end =
-    text.lastIndexOf("}");
+  const end = text.lastIndexOf("}");
 
-  if (
-    start === -1 ||
-    end === -1
-  ) {
-    throw new Error(
-      "Invalid AI JSON response"
-    );
+  if (start === -1 || end === -1) {
+    throw new Error("Invalid AI JSON response");
   }
 
-  return text.slice(
-    start,
-    end + 1
-  );
+  return text.slice(start, end + 1);
 };
