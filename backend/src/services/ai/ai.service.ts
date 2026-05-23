@@ -1,6 +1,6 @@
-import { OpenRouterProvider } from "./providers/openrouter.provider";
+import { UnifiedAIProvider } from "./providers/ai.provider";
 
-const provider = new OpenRouterProvider();
+const provider = new UnifiedAIProvider();
 
 export const generateQuestions = async (prompt: string) => {
   try {
