@@ -12,6 +12,10 @@ import healthRoutes from "./routes/health.routes";
 
 import { errorMiddleware } from "./middleware/error.middleware";
 
+import assignmentRoutes from "./routes/assignment.routes";
+
+import generationRoutes from "./routes/generation.routes";
+
 const app = express();
 
 app.use(
@@ -47,8 +51,9 @@ app.use(morgan("dev"));
 // Routes
 app.use("/api/v1/health", healthRoutes);
 
+app.use("/api/v1/assignments", assignmentRoutes);
 
-
+app.use("/api/v1/assignments", generationRoutes);
 
 // Default Route
 app.get("/", (_req, res) => {
@@ -62,7 +67,7 @@ app.get("/", (_req, res) => {
 app.use((_req, res) => {
   return res.status(404).json({
     success: false,
-    message: "Route not found"
+    message: "Route not found",
   });
 });
 
