@@ -15,7 +15,7 @@ export const successResponse = (
 export const errorResponse = (
   message = "Something went wrong",
 
-  errors: unknown = null,
+  errors: unknown = undefined,
 ) => {
   return {
     success: false,
