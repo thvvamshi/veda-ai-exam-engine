@@ -12,32 +12,39 @@ export default function DashboardLayout() {
 
         p-[12px]
 
-        overflow-hidden
+        flex
+
+        gap-[12px]
       "
     >
-      <div
+      {/* DESKTOP SIDEBAR */}
+      <aside
         className="
-          flex
-          gap-[12px]
+          hidden
+          lg:block
 
-          h-[calc(100vh-24px)]
+          shrink-0
         "
       >
-        {/* SIDEBAR */}
         <Sidebar />
+      </aside>
 
-        {/* PAGE CONTENT */}
-        <main
-          className="
-            flex-1
-            min-w-0
+      {/* PAGE CONTENT */}
+      <main
+        className="
+          flex-1
 
-            overflow-y-auto
-          "
-        >
-          <Outlet />
-        </main>
-      </div>
+          min-w-0
+
+          rounded-[32px]
+
+          bg-[#F3F3F3]
+
+          overflow-hidden
+        "
+      >
+        <Outlet />
+      </main>
     </div>
   );
 }

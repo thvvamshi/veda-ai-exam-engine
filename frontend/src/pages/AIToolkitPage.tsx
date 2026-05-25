@@ -1,9 +1,4 @@
-// src/pages/AIToolkitPage.tsx
-
 import BottomNavbar from "../components/mobile/BottomNavbar";
-
-import AIToolkitBanner from "../components/ai-toolkit/AIToolkitBanner";
-import PaperPreview from "../components/ai-toolkit/PaperPreview";
 
 export default function AIToolkitPage() {
   return (
@@ -14,33 +9,33 @@ export default function AIToolkitPage() {
           hidden
           lg:flex
 
-          flex-col
-
-          w-full
-          h-full
-
-          overflow-y-auto
-
-          px-[28px]
-          pt-[24px]
-          pb-[40px]
+          p-[24px]
         "
       >
         <div
           className="
             w-full
-            max-w-[1120px]
 
-            mx-auto
+            rounded-[32px]
 
-            flex
-            flex-col
-            gap-[20px]
+            bg-white
+
+            p-[32px]
           "
         >
-          <AIToolkitBanner />
+          <h1
+            className="
+              text-[32px]
+              font-[800]
+            "
+          >
+            AI Toolkit
+          </h1>
 
-          <PaperPreview />
+          <p className="mt-[12px]">
+            Question paper preview
+            will appear here.
+          </p>
         </div>
       </div>
 
@@ -49,33 +44,31 @@ export default function AIToolkitPage() {
         className="
           lg:hidden
 
-          min-h-screen
-          w-full
-
-          bg-[#F3F3F3]
-
-          overflow-x-hidden
-
-          px-[10px]
-          pt-[10px]
+          p-[16px]
           pb-[120px]
         "
       >
         <div
           className="
-            w-full
-            max-w-[373px]
+            rounded-[24px]
 
-            mx-auto
+            bg-white
 
-            flex
-            flex-col
-            gap-[10px]
+            p-[24px]
           "
         >
-          <AIToolkitBanner mobile />
+          <h1
+            className="
+              text-[24px]
+              font-[800]
+            "
+          >
+            AI Toolkit
+          </h1>
 
-          <PaperPreview mobile />
+          <p className="mt-[10px]">
+            Mobile preview page
+          </p>
         </div>
 
         <BottomNavbar />

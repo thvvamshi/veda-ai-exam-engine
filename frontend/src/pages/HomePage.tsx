@@ -1,293 +1,363 @@
 // src/pages/HomePage.tsx
 
-import { Link } from "react-router-dom";
+import {
+  Link,
+} from "react-router-dom";
 
 export default function HomePage() {
   return (
     <div
       className="
-        min-h-screen
         w-full
+        min-h-full
 
-        bg-[#F3F3F3]
+        p-[24px]
 
-        px-[16px]
-        py-[18px]
+        flex
+        flex-col
 
-        lg:px-[28px]
-        lg:py-[24px]
+        gap-[24px]
       "
     >
-      {/* HERO */}
+      {/* HERO SECTION */}
       <section
         className="
-          w-full
+          relative
+
+          overflow-hidden
 
           rounded-[40px]
 
-          bg-[linear-gradient(135deg,#1F1F1F_0%,#101010_100%)]
+          bg-[linear-gradient(135deg,#111111_0%,#1E1E1E_50%,#2B2B2B_100%)]
 
-          px-[24px]
-          py-[32px]
+          px-[40px]
+          py-[48px]
 
-          lg:px-[54px]
-          lg:py-[60px]
+          min-h-[320px]
 
           flex
           flex-col
-          lg:flex-row
-
-          items-center
           justify-between
-
-          gap-[40px]
-
-          overflow-hidden
         "
       >
-        {/* LEFT */}
-        <div className="max-w-[720px]">
-          {/* LOGO */}
-          <div className="flex items-center gap-[12px]">
+        {/* GLOW */}
+        <div
+          className="
+            absolute
+
+            top-[-80px]
+            right-[-80px]
+
+            w-[240px]
+            h-[240px]
+
+            rounded-full
+
+            bg-[#FFFFFF10]
+
+            blur-[40px]
+          "
+        />
+
+        {/* CONTENT */}
+        <div className="relative z-10">
+          <div
+            className="
+              inline-flex
+
+              items-center
+              gap-[10px]
+
+              rounded-full
+
+              bg-[#FFFFFF12]
+
+              px-[18px]
+              py-[10px]
+
+              backdrop-blur-md
+            "
+          >
             <div
               className="
-                w-[48px]
-                h-[48px]
+                w-[10px]
+                h-[10px]
 
-                rounded-[16px]
+                rounded-full
 
-                bg-[linear-gradient(135deg,#F5A623_0%,#E25454_50%,#7B1FA2_100%)]
-
-                flex
-                items-center
-                justify-center
-
-                text-white
-                text-[22px]
-                font-[800]
+                bg-[#56D25F]
               "
-            >
-              V
-            </div>
+            />
 
-            <h1
+            <span
               className="
+                text-[14px]
+                font-[600]
+
                 text-white
-
-                text-[24px]
-                lg:text-[28px]
-
-                font-[800]
-
-                tracking-[-0.04em]
               "
             >
-              VedaAI
-            </h1>
+              AI Powered Assessment Platform
+            </span>
           </div>
 
-          {/* TITLE */}
-          <h2
+          <h1
             className="
               mt-[28px]
 
-              text-white
+              max-w-[760px]
 
-              text-[38px]
-              leading-[46px]
-
-              lg:text-[72px]
-              lg:leading-[82px]
+              text-[58px]
+              leading-[66px]
 
               font-[800]
 
               tracking-[-0.06em]
+
+              text-white
             "
           >
-            AI Assessment
-            <br />
-            Creator
-          </h2>
+            Create Intelligent Question Papers
+            in Minutes with VedaAI
+          </h1>
 
-          {/* DESCRIPTION */}
           <p
             className="
-              mt-[20px]
+              mt-[24px]
 
-              max-w-[640px]
+              max-w-[720px]
 
-              text-[#C7C7C7]
+              text-[20px]
+              leading-[36px]
 
-              text-[16px]
-              leading-[30px]
-
-              lg:text-[20px]
-              lg:leading-[38px]
+              text-[#D0D0D0]
             "
           >
-            Create assignments, generate AI-powered
-            question papers, export PDFs, and manage
-            assessment workflows with a modern full
-            stack architecture.
+            Generate structured AI-powered
+            assessments, automate question paper
+            creation, manage assignments, and
+            deliver better learning experiences
+            for your students.
           </p>
-
-          {/* BUTTONS */}
-          <div
-            className="
-              mt-[34px]
-
-              flex
-              flex-col
-              sm:flex-row
-
-              gap-[16px]
-            "
-          >
-            <Link
-              to="/dashboard/assignment"
-              className="
-                h-[64px]
-
-                rounded-full
-
-                bg-white
-
-                px-[32px]
-
-                flex
-                items-center
-                justify-center
-                gap-[12px]
-
-                text-[#111111]
-                text-[18px]
-                font-[700]
-
-                shadow-[0px_14px_40px_rgba(0,0,0,0.18)]
-              "
-            >
-              ✨ Start Building
-            </Link>
-
-            <Link
-              to="/dashboard/ai-toolkit"
-              className="
-                h-[64px]
-
-                rounded-full
-
-                border
-                border-[#434343]
-
-                px-[32px]
-
-                flex
-                items-center
-                justify-center
-
-                text-white
-                text-[18px]
-                font-[600]
-              "
-            >
-              View AI Toolkit
-            </Link>
-          </div>
         </div>
 
-        {/* RIGHT CARD */}
+        {/* ACTIONS */}
         <div
           className="
-            w-full
-            max-w-[430px]
+            relative
+            z-10
 
-            rounded-[36px]
+            mt-[40px]
 
-            bg-white
+            flex
+            flex-wrap
 
-            p-[22px]
+            items-center
 
-            shadow-[0px_20px_80px_rgba(0,0,0,0.24)]
+            gap-[18px]
           "
         >
-          <div
+          <Link
+            to="/upload-material"
             className="
-              rounded-[28px]
+              h-[62px]
 
-              bg-[#F6F6F6]
+              rounded-full
 
-              p-[22px]
+              bg-white
+
+              px-[34px]
+
+              flex
+              items-center
+              justify-center
+
+              text-[18px]
+              font-[700]
+
+              text-[#111111]
+
+              transition-all
+              duration-200
+
+              hover:scale-[1.03]
             "
           >
-            <div className="flex items-center justify-between">
-              <h3
-                className="
-                  text-[22px]
-                  font-[700]
+            Create Assignment
+          </Link>
 
-                  tracking-[-0.03em]
+          <Link
+            to="/assignment"
+            className="
+              h-[62px]
 
-                  text-[#1F1F1F]
-                "
-              >
-                AI Generated Paper
-              </h3>
+              rounded-full
 
-              <span className="text-[24px]">
-                ⚡
-              </span>
-            </div>
+              border
+              border-[#FFFFFF22]
 
-            <div className="mt-[24px] flex flex-col gap-[14px]">
-              {[
-                "Section A - MCQs",
-                "Section B - Short Answers",
-                "Difficulty Tags",
-                "Marks Distribution",
-                "PDF Export Ready",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="
-                    h-[58px]
+              bg-[#FFFFFF10]
 
-                    rounded-[18px]
+              px-[34px]
 
-                    bg-white
+              flex
+              items-center
+              justify-center
 
-                    px-[18px]
+              text-[18px]
+              font-[600]
 
-                    flex
-                    items-center
-                    justify-between
-                  "
-                >
-                  <span
-                    className="
-                      text-[16px]
-                      font-[600]
+              text-white
 
-                      text-[#1F1F1F]
-                    "
-                  >
-                    {item}
-                  </span>
+              backdrop-blur-md
 
-                  <span className="text-[20px]">
-                    ✓
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
+              transition-all
+              duration-200
+
+              hover:bg-[#FFFFFF18]
+            "
+          >
+            View Assignments
+          </Link>
         </div>
       </section>
 
+      {/* STATS */}
+      <section
+        className="
+          grid
+
+          grid-cols-1
+          md:grid-cols-3
+
+          gap-[20px]
+        "
+      >
+        {[
+          {
+            title:
+              "Assignments Generated",
+            value: "1,240+",
+          },
+
+          {
+            title:
+              "AI Questions Created",
+            value: "25K+",
+          },
+
+          {
+            title:
+              "Schools Using VedaAI",
+            value: "150+",
+          },
+        ].map((item) => (
+          <div
+            key={item.title}
+            className="
+              rounded-[32px]
+
+              bg-white
+
+              p-[28px]
+
+              shadow-[0px_4px_30px_rgba(0,0,0,0.04)]
+            "
+          >
+            <p
+              className="
+                text-[15px]
+
+                text-[#707070]
+              "
+            >
+              {item.title}
+            </p>
+
+            <h2
+              className="
+                mt-[12px]
+
+                text-[42px]
+                leading-none
+
+                font-[800]
+
+                tracking-[-0.05em]
+
+                text-[#111111]
+              "
+            >
+              {item.value}
+            </h2>
+          </div>
+        ))}
+      </section>
+
       {/* FEATURES */}
-      <section className="mt-[28px]">
+      <section
+        className="
+          rounded-[40px]
+
+          bg-white
+
+          p-[36px]
+        "
+      >
         <div
           className="
+            flex
+            items-center
+            justify-between
+
+            flex-wrap
+
+            gap-[20px]
+          "
+        >
+          <div>
+            <h2
+              className="
+                text-[38px]
+                leading-[48px]
+
+                font-[800]
+
+                tracking-[-0.05em]
+
+                text-[#111111]
+              "
+            >
+              Everything Needed for Smart
+              Assessments
+            </h2>
+
+            <p
+              className="
+                mt-[12px]
+
+                max-w-[720px]
+
+                text-[18px]
+                leading-[32px]
+
+                text-[#707070]
+              "
+            >
+              Built with scalable real-time
+              architecture using AI generation,
+              WebSockets, background jobs, and
+              modern frontend systems.
+            </p>
+          </div>
+        </div>
+
+        <div
+          className="
+            mt-[40px]
+
             grid
+
             grid-cols-1
             md:grid-cols-2
             xl:grid-cols-4
@@ -298,71 +368,65 @@ export default function HomePage() {
           {[
             {
               icon: "🧠",
-              title: "AI Question Generation",
-              desc: "Generate structured papers with sections, marks, and difficulty levels.",
+              title:
+                "AI Question Generation",
+              desc:
+                "Generate structured assessments with difficulty levels and marks distribution.",
             },
 
             {
               icon: "⚡",
-              title: "Realtime Updates",
-              desc: "Track assignment generation with WebSockets and live updates.",
+              title:
+                "Real-Time Updates",
+              desc:
+                "Track assignment generation live using WebSockets and event-driven architecture.",
             },
 
             {
               icon: "📄",
-              title: "PDF Export",
-              desc: "Export professional exam papers with proper formatting.",
+              title:
+                "PDF Export",
+              desc:
+                "Download beautifully formatted question papers instantly.",
             },
 
             {
-              icon: "📦",
-              title: "Scalable Backend",
-              desc: "Built using Node.js, MongoDB, Redis, BullMQ, and AI.",
+              icon: "☁️",
+              title:
+                "Scalable System Design",
+              desc:
+                "Powered by Redis, BullMQ, MongoDB, and production-grade APIs.",
             },
           ].map((feature) => (
             <div
               key={feature.title}
               className="
-                rounded-[32px]
+                rounded-[28px]
 
-                bg-white
+                bg-[#F7F7F7]
 
-                p-[28px]
+                p-[24px]
 
-                shadow-[0px_4px_24px_rgba(0,0,0,0.05)]
+                transition-all
+                duration-200
+
+                hover:translate-y-[-4px]
               "
             >
-              <div
-                className="
-                  w-[68px]
-                  h-[68px]
-
-                  rounded-[22px]
-
-                  bg-[#F5F5F5]
-
-                  flex
-                  items-center
-                  justify-center
-
-                  text-[30px]
-                "
-              >
+              <div className="text-[42px]">
                 {feature.icon}
               </div>
 
               <h3
                 className="
-                  mt-[22px]
+                  mt-[18px]
 
-                  text-[24px]
-                  leading-[34px]
+                  text-[22px]
+                  leading-[30px]
 
                   font-[700]
 
-                  tracking-[-0.03em]
-
-                  text-[#1F1F1F]
+                  text-[#111111]
                 "
               >
                 {feature.title}
@@ -370,10 +434,10 @@ export default function HomePage() {
 
               <p
                 className="
-                  mt-[14px]
+                  mt-[12px]
 
                   text-[16px]
-                  leading-[30px]
+                  leading-[28px]
 
                   text-[#707070]
                 "
@@ -384,22 +448,6 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-
-      {/* FOOTER */}
-      <footer
-        className="
-          mt-[40px]
-
-          text-center
-
-          text-[15px]
-
-          text-[#707070]
-        "
-      >
-        AI Assessment Creator • Full Stack Engineering
-        Assignment
-      </footer>
     </div>
   );
 }

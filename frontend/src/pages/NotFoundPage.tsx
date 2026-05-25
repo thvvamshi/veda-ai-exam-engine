@@ -1,8 +1,11 @@
-// src/pages/NotFoundPage.tsx
-
-import { Link } from "react-router-dom";
+import {
+  useNavigate,
+} from "react-router-dom";
 
 export default function NotFoundPage() {
+  const navigate =
+    useNavigate();
+
   return (
     <div
       className="
@@ -78,12 +81,17 @@ export default function NotFoundPage() {
             text-[#707070]
           "
         >
-          The page you are trying to access does
-          not exist or may have been moved.
+          The page you are trying to access
+          does not exist or may have been
+          moved.
         </p>
 
-        <Link
-          to="/assignment"
+        <button
+          onClick={() =>
+            navigate(
+              "/assignment"
+            )
+          }
           className="
             mt-[34px]
 
@@ -102,10 +110,17 @@ export default function NotFoundPage() {
             text-white
             text-[18px]
             font-[600]
+
+            cursor-pointer
+
+            transition-all
+            duration-200
+
+            hover:scale-[1.02]
           "
         >
           Back to Dashboard
-        </Link>
+        </button>
       </div>
     </div>
   );

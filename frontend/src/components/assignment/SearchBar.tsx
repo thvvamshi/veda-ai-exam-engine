@@ -1,88 +1,58 @@
-export default function SearchBar() {
+type Props = {
+  value: string;
+
+  onChange: (
+    value: string
+  ) => void;
+};
+
+export default function SearchBar({
+  value,
+  onChange,
+}: Props) {
   return (
     <div
       className="
         w-full
 
-        rounded-[28px]
+        rounded-[24px]
 
-        bg-[#F5F5F5]
+        bg-white
 
         px-[24px]
-        py-[16px]
+        py-[18px]
 
         flex
-        flex-col
-        lg:flex-row
+        items-center
+        gap-[12px]
 
-        lg:items-center
-        justify-between
-
-        gap-[16px]
+        shadow-[0px_4px_20px_rgba(0,0,0,0.04)]
       "
     >
-      {/* FILTER */}
-      <div
-        className="
-          flex
-          items-center
-          gap-[10px]
+      <span className="text-[20px]">
+        🔍
+      </span>
 
-          text-[#A0A0A0]
-
-          text-[16px]
-          md:text-[18px]
-
-          font-semibold
-        "
-      >
-        <span className="text-[22px]">⚲</span>
-
-        <span>Filter By</span>
-      </div>
-
-      {/* SEARCH */}
-      <div
+      <input
+        value={value}
+        onChange={(e) =>
+          onChange(
+            e.target.value
+          )
+        }
+        placeholder="Search assignments..."
         className="
           w-full
-          lg:w-[520px]
 
-          h-[45px]
+          bg-transparent
 
-          rounded-full
+          outline-none
 
-          border
-          border-[#D9D9D9]
+          text-[16px]
 
-          px-[20px]
-
-          flex
-          items-center
-          gap-[12px]
+          placeholder:text-[#9E9E9E]
         "
-      >
-        <span className="text-[#B1B1B1] text-[22px]">
-          ⌕
-        </span>
-
-        <input
-          type="text"
-          placeholder="Search Assignment"
-          className="
-            flex-1
-
-            bg-transparent
-            outline-none
-
-            text-[16px]
-            md:text-[18px]
-
-            text-[#3A3A3A]
-
-            placeholder:text-[#B9B9B9]
-          "
-        />
-      </div>
+      />
     </div>
   );
 }

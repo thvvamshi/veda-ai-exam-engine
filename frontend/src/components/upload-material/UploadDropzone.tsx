@@ -1,150 +1,276 @@
 // src/components/upload-material/UploadDropzone.tsx
 
-import { Upload } from "lucide-react";
+import type React from "react";
+
+import toast from "react-hot-toast";
 
 type Props = {
   mobile?: boolean;
+
+  uploadedFile: File | null;
+
+  setUploadedFile: (
+    file: File | null
+  ) => void;
 };
 
 export default function UploadDropzone({
   mobile = false,
+  uploadedFile,
+  setUploadedFile,
 }: Props) {
+  const validateFile = (
+    file: File
+  ) => {
+    const isPdf =
+      file.type ===
+        "application/pdf" ||
+      file.name
+        .toLowerCase()
+        .endsWith(".pdf");
+
+    if (!isPdf) {
+      toast.error(
+        "Only PDF files are allowed"
+      );
+
+      return false;
+    }
+
+    if (
+      file.size >
+      10 * 1024 * 1024
+    ) {
+      toast.error(
+        "Maximum file size is 10MB"
+      );
+
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file =
+      e.target.files?.[0];
+
+    if (!file) return;
+
+    const isValid =
+      validateFile(file);
+
+    if (!isValid) {
+      e.target.value = "";
+
+      return;
+    }
+
+    setUploadedFile(file);
+
+    toast.success(
+      "File uploaded successfully"
+    );
+  };
+
+  const handleDrop = (
+    e: React.DragEvent<HTMLLabelElement>
+  ) => {
+    e.preventDefault();
+
+    const file =
+      e.dataTransfer.files?.[0];
+
+    if (!file) return;
+
+    const isValid =
+      validateFile(file);
+
+    if (!isValid) return;
+
+    setUploadedFile(file);
+
+    toast.success(
+      "File uploaded successfully"
+    );
+  };
+
+  const handleDragOver = (
+    e: React.DragEvent<HTMLLabelElement>
+  ) => {
+    e.preventDefault();
+  };
+
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLLabelElement>
+  ) => {
+    if (
+      e.key === "Enter" ||
+      e.key === " "
+    ) {
+      e.preventDefault();
+
+      const input =
+        e.currentTarget.querySelector(
+          "input"
+        );
+
+      input?.click();
+    }
+  };
+
   return (
-    <>
-      <div
+    <div>
+      {/* LABEL */}
+
+      <label
         className={`
-          rounded-[28px]
+          font-[700]
 
-          border-[3px]
+          text-[#1F1F1F]
+
+          ${
+            mobile
+              ? "text-[15px]"
+              : "text-[18px]"
+          }
+        `}
+      >
+        Upload Material
+      </label>
+
+      {/* DROPZONE */}
+
+      <label
+        onDrop={handleDrop}
+        onDragOver={
+          handleDragOver
+        }
+        onKeyDown={
+          handleKeyDown
+        }
+        aria-label="Upload PDF material"
+        tabIndex={0}
+        className={`
+          mt-[14px]
+
+          w-full
+
+          border-2
           border-dashed
-          border-[#D7D7D7]
 
-          bg-[#FBFBFB]
+          ${
+            uploadedFile
+              ? "border-[#22C55E]"
+              : "border-[#DADADA]"
+          }
+
+          rounded-[28px]
 
           flex
           flex-col
+
           items-center
           justify-center
 
+          cursor-pointer
+
+          bg-[#FAFAFA]
+
+          transition-all
+          duration-200
+
+          hover:border-[#111111]
+
+          focus-within:border-[#111111]
+          focus-within:ring-2
+          focus-within:ring-[#11111110]
+
           ${
             mobile
-              ? "h-[294px] px-[20px]"
-              : "h-[300px]"
+              ? "h-[220px]"
+              : "h-[280px]"
           }
         `}
       >
-        <div
-          className={`
-            rounded-[16px]
+        {/* INPUT */}
 
-            bg-white
+        <input
+          type="file"
+          accept=".pdf,application/pdf"
+          hidden
+          onChange={
+            handleFileChange
+          }
+        />
 
-            flex
-            items-center
-            justify-center
+        {/* ICON */}
 
-            ${
-              mobile
-                ? "w-[64px] h-[64px]"
-                : "w-[72px] h-[72px]"
-            }
-          `}
-        >
-          <Upload
-            className={`
-              ${
-                mobile
-                  ? "w-[34px] h-[34px]"
-                  : "w-[38px] h-[38px]"
-              }
-            `}
-          />
+        <div className="text-[52px]">
+          {uploadedFile
+            ? "✅"
+            : "📄"}
         </div>
 
+        {/* TITLE */}
+
         <h3
-          className={`
-            mt-[24px]
+          className="
+            mt-[18px]
+
+            text-[18px]
+            font-[700]
+
+            text-[#1F1F1F]
 
             text-center
-            font-semibold
 
-            ${
-              mobile
-                ? "text-[18px]"
-                : "text-[24px]"
-            }
-          `}
+            px-[20px]
+
+            break-all
+          "
         >
-          Choose a file or drag & drop it here
+          {uploadedFile
+            ? uploadedFile.name
+            : "Upload PDF Material"}
         </h3>
 
+        {/* DESCRIPTION */}
+
         <p
-          className={`
-            mt-[10px]
+          className="
+            mt-[8px]
 
-            text-[#B1B1B1]
+            text-[14px]
 
-            ${
-              mobile
-                ? "text-[14px]"
-                : "text-[18px]"
-            }
-          `}
+            text-[#7B7B7B]
+
+            text-center
+          "
         >
-          JPEG, PNG, upto 10MB
+          {uploadedFile
+            ? "File ready for AI processing"
+            : "Drag & drop or click to upload"}
         </p>
 
-        <button
-          className={`
-            mt-[22px]
+        {/* FILE SIZE */}
 
-            rounded-full
+        {!uploadedFile && (
+          <p
+            className="
+              mt-[8px]
 
-            bg-[#F3F3F3]
+              text-[12px]
 
-            font-semibold
-
-            ${
-              mobile
-                ? `
-                  h-[52px]
-                  px-[34px]
-                  text-[16px]
-                `
-              : `
-                  h-[56px]
-                  px-[40px]
-                  text-[18px]
-                `
-            }
-          `}
-        >
-          Browse Files
-        </button>
-      </div>
-
-      <p
-        className={`
-          text-center
-          text-[#707070]
-
-          ${
-            mobile
-              ? `
-                mt-[18px]
-                text-[16px]
-                leading-[160%]
-              `
-              : `
-                mt-[18px]
-                text-[18px]
-              `
-          }
-        `}
-      >
-        Upload images of your preferred
-        document/image
-      </p>
-    </>
+              text-[#A0A0A0]
+            "
+          >
+            Max size: 10MB
+          </p>
+        )}
+      </label>
+    </div>
   );
 }

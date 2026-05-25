@@ -1,11 +1,8 @@
 import AssignmentCard from "./AssignmentCard";
 
-type Assignment = {
-  id: number;
-  title: string;
-  assigned: string;
-  due: string;
-};
+import EmptyAssignmentState from "./EmptyAssignmentState";
+
+import { Assignment } from "../../types/assignment.types";
 
 type Props = {
   assignments: Assignment[];
@@ -14,23 +11,38 @@ type Props = {
 export default function AssignmentGrid({
   assignments,
 }: Props) {
+  if (
+    !assignments ||
+    assignments.length === 0
+  ) {
+    return (
+      <EmptyAssignmentState />
+    );
+  }
+
   return (
     <div
       className="
         grid
+
         grid-cols-1
         xl:grid-cols-2
+
         gap-[18px]
       "
     >
-      {assignments.map((assignment) => (
-        <AssignmentCard
-          key={assignment.id}
-          title={assignment.title}
-          assigned={assignment.assigned}
-          due={assignment.due}
-        />
-      ))}
+      {assignments.map(
+        (assignment) => (
+          <AssignmentCard
+            key={
+              assignment._id
+            }
+            assignment={
+              assignment
+            }
+          />
+        )
+      )}
     </div>
   );
 }

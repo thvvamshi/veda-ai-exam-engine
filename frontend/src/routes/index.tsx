@@ -2,87 +2,115 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 
+import {
+  lazy,
+  Suspense,
+} from "react";
+
 import DashboardLayout from "../layouts/DashboardLayout";
 
-import HomePage from "../pages/HomePage";
-import DashboardPage from "../pages/DashboardPage";
-import UploadMaterialPage from "../pages/UploadMaterialPage";
-import AIToolkitPage from "../pages/AIToolkitPage";
+import Loader from "../components/common/Loader";
+
 import NotFoundPage from "../pages/NotFoundPage";
 
-function PlaceholderPage({
-  title,
-}: {
-  title: string;
-}) {
-  return (
-    <div
-      className="
-        w-full
-        h-full
-        min-h-screen
+const HomePage = lazy(
+  () =>
+    import(
+      "../pages/HomePage"
+    )
+);
 
-        flex
-        items-center
-        justify-center
+const DashboardPage = lazy(
+  () =>
+    import(
+      "../pages/DashboardPage"
+    )
+);
 
-        text-[36px]
-        font-[700]
-
-        text-[#1F1F1F]
-      "
-    >
-      {title}
-    </div>
+const UploadMaterialPage =
+  lazy(
+    () =>
+      import(
+        "../pages/UploadMaterialPage"
+      )
   );
-}
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <DashboardLayout />,
+const AIToolkitPage = lazy(
+  () =>
+    import(
+      "../pages/AIToolkitPage"
+    )
+);
 
-    children: [
-      {
-        index: true,
-        element: <HomePage />,
-      },
+const withSuspense = (
+  component: React.ReactNode
+) => (
+  <Suspense
+    fallback={<Loader />}
+  >
+    {component}
+  </Suspense>
+);
 
-      {
-        path: "assignment",
-        element: <DashboardPage />,
-      },
+const router =
+  createBrowserRouter([
+    {
+      path: "/",
 
-      {
-        path: "upload-material",
-        element: <UploadMaterialPage />,
-      },
+      element:
+        <DashboardLayout />,
 
-      {
-        path: "ai-toolkit",
-        element: <AIToolkitPage />,
-      },
+      errorElement:
+        <NotFoundPage />,
 
-      {
-        path: "groups",
-        element: (
-          <PlaceholderPage title="My Groups" />
-        ),
-      },
+      children: [
+        {
+          index: true,
 
-      {
-        path: "library",
-        element: (
-          <PlaceholderPage title="My Library" />
-        ),
-      },
-    ],
-  },
+          element:
+            withSuspense(
+              <HomePage />
+            ),
+        },
 
-  {
-    path: "*",
-    element: <NotFoundPage />,
-  },
-]);
+        {
+          path:
+            "assignment",
+
+          element:
+            withSuspense(
+              <DashboardPage />
+            ),
+        },
+
+        {
+          path:
+            "upload-material",
+
+          element:
+            withSuspense(
+              <UploadMaterialPage />
+            ),
+        },
+
+        {
+          path:
+            "ai-toolkit",
+
+          element:
+            withSuspense(
+              <AIToolkitPage />
+            ),
+        },
+      ],
+    },
+
+    {
+      path: "*",
+
+      element:
+        <NotFoundPage />,
+    },
+  ]);
 
 export default router;

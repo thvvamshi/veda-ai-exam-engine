@@ -1,274 +1,123 @@
-// src/components/upload-material/QuestionTypeList.tsx
-
-import { Plus } from "lucide-react";
-
-import MobileQuestionCard from "../mobile/MobileQuestionCard";
 
 import QuestionTypeRow from "./QuestionTypeRow";
 
-type Props = {
-  mobile?: boolean;
+type QuestionType = {
+  type: string;
+  count: number;
+  marks: number;
 };
 
-const rows = [
-  {
-    title: "Multiple Choice Questions",
-    questions: 4,
-    marks: 1,
-  },
-  {
-    title: "Short Questions",
-    questions: 3,
-    marks: 2,
-  },
-  {
-    title: "Diagram/Graph-Based Questions",
-    questions: 5,
-    marks: 5,
-  },
-  {
-    title: "Numerical Problems",
-    questions: 5,
-    marks: 5,
-  },
-];
+type Props = {
+  mobile?: boolean;
+
+  questionTypes: QuestionType[];
+
+  setQuestionTypes: (
+    value: QuestionType[]
+  ) => void;
+};
 
 export default function QuestionTypeList({
   mobile = false,
+  questionTypes,
+  setQuestionTypes,
 }: Props) {
-  if (mobile) {
-    return (
-      <div>
-        {/* TITLE */}
-        <h2
-          className="
-            text-[24px]
-            font-black
-            text-[#2A2A2A]
-          "
-        >
-          Question Type
-        </h2>
+  const updateQuestion = (
+    index: number,
+    field: string,
+    value: any
+  ) => {
+    const updated = [...questionTypes];
 
-        {/* LIST */}
-        <div className="mt-[22px] flex flex-col gap-[18px]">
-          {rows.map((row) => (
-            <QuestionTypeRow
-              key={row.title}
-              title={row.title}
-              questions={row.questions}
-              marks={row.marks}
-              mobile
-            />
-          ))}
-        </div>
+    updated[index] = {
+      ...updated[index],
+      [field]: value,
+    };
 
-        {/* ADD */}
-        <button
-          className="
-            mt-[24px]
+    setQuestionTypes(updated);
+  };
 
-            flex
-            items-center
-            gap-[14px]
-          "
-        >
-          <div
-            className="
-              w-[58px]
-              h-[58px]
+  const removeQuestion = (
+    index: number
+  ) => {
+    const updated =
+      questionTypes.filter(
+        (_, i) => i !== index
+      );
 
-              rounded-full
+    setQuestionTypes(updated);
+  };
 
-              bg-[#232323]
+  const addQuestionType = () => {
+    setQuestionTypes([
+      ...questionTypes,
 
-              flex
-              items-center
-              justify-center
-            "
-          >
-            <Plus className="w-[32px] h-[32px] text-white" />
-          </div>
-
-          <span
-            className="
-              text-[18px]
-              font-black
-              text-[#2A2A2A]
-            "
-          >
-            Add Question Type
-          </span>
-        </button>
-
-        {/* TOTAL */}
-        <div
-          className="
-            mt-[34px]
-
-            flex
-            flex-col
-            items-end
-
-            gap-[10px]
-          "
-        >
-          <div
-            className="
-              text-[20px]
-              font-semibold
-              text-[#2A2A2A]
-            "
-          >
-            Total Questions : 25
-          </div>
-
-          <div
-            className="
-              text-[20px]
-              font-semibold
-              text-[#2A2A2A]
-            "
-          >
-            Total Marks : 60
-          </div>
-        </div>
-      </div>
-    );
-  }
+      {
+        type: "",
+        count: 1,
+        marks: 1,
+      },
+    ]);
+  };
 
   return (
     <div>
-      {/* HEADER */}
       <div
         className="
-          grid
-
-          grid-cols-[1fr_60px_180px_180px]
-
-          gap-[18px]
-
-          items-center
-        "
-      >
-        <h2
-          className="
-            text-[20px]
-            font-black
-            text-[#2A2A2A]
-          "
-        >
-          Question Type
-        </h2>
-
-        <div />
-
-        <div
-          className="
-            text-center
-
-            text-[18px]
-            font-black
-            text-[#2A2A2A]
-          "
-        >
-          No. of Questions
-        </div>
-
-        <div
-          className="
-            text-center
-
-            text-[18px]
-            font-black
-            text-[#2A2A2A]
-          "
-        >
-          Marks
-        </div>
-      </div>
-
-      {/* ROWS */}
-      <div className="mt-[22px] flex flex-col gap-[18px]">
-        {rows.map((row) => (
-          <QuestionTypeRow
-            key={row.title}
-            title={row.title}
-            questions={row.questions}
-            marks={row.marks}
-          />
-        ))}
-      </div>
-
-      {/* ADD */}
-      <button
-        className="
-          mt-[24px]
-
           flex
           items-center
-          gap-[14px]
+          justify-between
         "
       >
-        <div
+        <h3
+          className={`
+            font-[700]
+
+            text-[#1F1F1F]
+
+            ${
+              mobile
+                ? "text-[15px]"
+                : "text-[18px]"
+            }
+          `}
+        >
+          Question Types
+        </h3>
+
+        <button
+          onClick={addQuestionType}
           className="
-            w-[48px]
-            h-[48px]
+            h-[42px]
 
             rounded-full
 
-            bg-[#232323]
+            bg-[#111111]
 
-            flex
-            items-center
-            justify-center
+            px-[18px]
+
+            text-white
+            text-[14px]
+            font-[600]
           "
         >
-          <Plus className="w-[28px] h-[28px] text-white" />
-        </div>
+          + Add
+        </button>
+      </div>
 
-        <span
-          className="
-            text-[18px]
-            font-black
-            text-[#2A2A2A]
-          "
-        >
-          Add Question Type
-        </span>
-      </button>
-
-      {/* TOTALS */}
-      <div
-        className="
-          mt-[28px]
-
-          flex
-          flex-col
-          items-end
-
-          gap-[8px]
-        "
-      >
-        <div
-          className="
-            text-[18px]
-            font-semibold
-            text-[#2A2A2A]
-          "
-        >
-          Total Questions : 25
-        </div>
-
-        <div
-          className="
-            text-[18px]
-            font-semibold
-            text-[#2A2A2A]
-          "
-        >
-          Total Marks : 60
-        </div>
+      <div className="mt-[18px] flex flex-col gap-[14px]">
+        {questionTypes.map(
+          (question, index) => (
+            <QuestionTypeRow
+              key={index}
+              mobile={mobile}
+              data={question}
+              onChange={updateQuestion}
+              onDelete={removeQuestion}
+              index={index}
+            />
+          )
+        )}
       </div>
     </div>
   );

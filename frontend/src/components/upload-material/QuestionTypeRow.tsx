@@ -1,278 +1,151 @@
-// src/components/upload-material/QuestionTypeRow.tsx
-
-import {
-  ChevronDown,
-  Minus,
-  Plus,
-  X,
-} from "lucide-react";
 
 type Props = {
-  title: string;
-  questions: number;
-  marks: number;
   mobile?: boolean;
+
+  index: number;
+
+  data: {
+    type: string;
+    count: number;
+    marks: number;
+  };
+
+  onChange: (
+    index: number,
+    field: string,
+    value: any
+  ) => void;
+
+  onDelete: (
+    index: number
+  ) => void;
 };
 
 export default function QuestionTypeRow({
-  title,
-  questions,
-  marks,
   mobile = false,
+  index,
+  data,
+  onChange,
+  onDelete,
 }: Props) {
-  if (mobile) {
-    return (
-      <div
-        className="
-          rounded-[26px]
-
-          bg-white
-
-          px-[20px]
-          py-[20px]
-        "
-      >
-        {/* TOP */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-[14px]">
-            <span
-              className="
-                text-[18px]
-                font-semibold
-                text-[#2A2A2A]
-              "
-            >
-              {title}
-            </span>
-
-            <ChevronDown className="w-[24px] h-[24px]" />
-          </div>
-
-          <X className="w-[28px] h-[28px]" />
-        </div>
-
-        {/* BOX */}
-        <div
-          className="
-            mt-[18px]
-
-            rounded-[24px]
-
-            bg-[#F3F3F3]
-
-            px-[18px]
-            py-[16px]
-          "
-        >
-          <div className="grid grid-cols-2 gap-[16px]">
-            {/* QUESTIONS */}
-            <div>
-              <h4
-                className="
-                  text-center
-
-                  text-[16px]
-                  font-bold
-                  text-[#2A2A2A]
-                "
-              >
-                No. of Questions
-              </h4>
-
-              <div
-                className="
-                  mt-[12px]
-
-                  h-[64px]
-
-                  rounded-full
-
-                  bg-white
-
-                  px-[18px]
-
-                  flex
-                  items-center
-                  justify-between
-                "
-              >
-                <Minus className="w-[24px] h-[24px]" />
-
-                <span
-                  className="
-                    text-[22px]
-                    font-bold
-                  "
-                >
-                  {questions}
-                </span>
-
-                <Plus className="w-[24px] h-[24px]" />
-              </div>
-            </div>
-
-            {/* MARKS */}
-            <div>
-              <h4
-                className="
-                  text-center
-
-                  text-[16px]
-                  font-bold
-                  text-[#2A2A2A]
-                "
-              >
-                Marks
-              </h4>
-
-              <div
-                className="
-                  mt-[12px]
-
-                  h-[64px]
-
-                  rounded-full
-
-                  bg-white
-
-                  px-[18px]
-
-                  flex
-                  items-center
-                  justify-between
-                "
-              >
-                <Minus className="w-[24px] h-[24px]" />
-
-                <span
-                  className="
-                    text-[22px]
-                    font-bold
-                  "
-                >
-                  {marks}
-                </span>
-
-                <Plus className="w-[24px] h-[24px]" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div
       className="
-        grid
+        rounded-[24px]
 
-        grid-cols-[1fr_60px_180px_180px]
+        border
+        border-[#EAEAEA]
 
-        items-center
+        p-[18px]
 
-        gap-[18px]
+        flex
+        flex-col
+        lg:flex-row
+
+        gap-[14px]
       "
     >
-      {/* SELECT */}
-      <div
+      <input
+        value={data.type}
+        onChange={(e) =>
+          onChange(
+            index,
+            "type",
+            e.target.value
+          )
+        }
+        placeholder="Question Type"
         className="
-          h-[58px]
+          flex-1
 
-          rounded-full
+          h-[52px]
 
-          bg-white
+          rounded-[16px]
 
-          px-[28px]
+          border
+          border-[#E4E4E4]
 
-          flex
-          items-center
-          justify-between
+          px-[16px]
+
+          outline-none
         "
-      >
-        <span
-          className="
-            text-[18px]
-            font-semibold
-            text-[#2A2A2A]
-          "
-        >
-          {title}
-        </span>
+      />
 
-        <ChevronDown className="w-[22px] h-[22px]" />
-      </div>
+      <input
+        type="number"
+        value={data.count}
+        onChange={(e) =>
+          onChange(
+            index,
+            "count",
+            Number(e.target.value)
+          )
+        }
+        placeholder="Questions"
+        className="
+          w-full
+          lg:w-[140px]
 
-      {/* DELETE */}
+          h-[52px]
+
+          rounded-[16px]
+
+          border
+          border-[#E4E4E4]
+
+          px-[16px]
+
+          outline-none
+        "
+      />
+
+      <input
+        type="number"
+        value={data.marks}
+        onChange={(e) =>
+          onChange(
+            index,
+            "marks",
+            Number(e.target.value)
+          )
+        }
+        placeholder="Marks"
+        className="
+          w-full
+          lg:w-[140px]
+
+          h-[52px]
+
+          rounded-[16px]
+
+          border
+          border-[#E4E4E4]
+
+          px-[16px]
+
+          outline-none
+        "
+      />
+
       <button
+        onClick={() =>
+          onDelete(index)
+        }
         className="
-          flex
-          items-center
-          justify-center
+          h-[52px]
+
+          rounded-[16px]
+
+          bg-[#FFECEC]
+
+          px-[20px]
+
+          text-[#D92D20]
+          font-[700]
         "
       >
-        <X className="w-[24px] h-[24px]" />
+        Delete
       </button>
-
-      {/* QUESTIONS */}
-      <div
-        className="
-          h-[58px]
-
-          rounded-full
-
-          bg-white
-
-          px-[18px]
-
-          flex
-          items-center
-          justify-between
-        "
-      >
-        <Minus className="w-[20px] h-[20px] text-[#D0D0D0]" />
-
-        <span
-          className="
-            text-[18px]
-            font-bold
-          "
-        >
-          {questions}
-        </span>
-
-        <Plus className="w-[20px] h-[20px] text-[#D0D0D0]" />
-      </div>
-
-      {/* MARKS */}
-      <div
-        className="
-          h-[58px]
-
-          rounded-full
-
-          bg-white
-
-          px-[18px]
-
-          flex
-          items-center
-          justify-between
-        "
-      >
-        <Minus className="w-[20px] h-[20px] text-[#D0D0D0]" />
-
-        <span
-          className="
-            text-[18px]
-            font-bold
-          "
-        >
-          {marks}
-        </span>
-
-        <Plus className="w-[20px] h-[20px] text-[#D0D0D0]" />
-      </div>
     </div>
   );
 }

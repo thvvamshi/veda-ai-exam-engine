@@ -1,125 +1,68 @@
-// src/components/upload-material/DueDateInput.tsx
-
-import { CalendarDays } from "lucide-react";
 
 type Props = {
   mobile?: boolean;
+
+  value: string;
+
+  onChange: (value: string) => void;
 };
 
 export default function DueDateInput({
   mobile = false,
+  value,
+  onChange,
 }: Props) {
-  if (mobile) {
-    return (
-      <div>
-        {/* LABEL */}
-        <h3
-          className="
-            text-[24px]
-            font-black
-            text-[#2A2A2A]
-          "
-        >
-          Due Date
-        </h3>
-
-        {/* INPUT */}
-        <div
-          className="
-            mt-[14px]
-
-            h-[82px]
-
-            rounded-full
-
-            border-[2px]
-            border-[#DDDDDD]
-
-            bg-[#F7F7F7]
-
-            px-[26px]
-
-            flex
-            items-center
-            justify-between
-          "
-        >
-          <span
-            className="
-              text-[22px]
-              font-semibold
-              text-[#B1B1B1]
-            "
-          >
-            DD-MM-YYYY
-          </span>
-
-          <CalendarDays
-            className="
-              w-[34px]
-              h-[34px]
-
-              text-[#2D2D2D]
-            "
-          />
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div>
-      {/* LABEL */}
-      <h3
-        className="
-          text-[18px]
-          font-black
-          text-[#2A2A2A]
-        "
+      <label
+        className={`
+          font-[700]
+
+          text-[#1F1F1F]
+
+          ${
+            mobile
+              ? "text-[15px]"
+              : "text-[18px]"
+          }
+        `}
       >
         Due Date
-      </h3>
+      </label>
 
-      {/* INPUT */}
-      <div
-        className="
+      <input
+        type="date"
+        value={value}
+        onChange={(e) =>
+          onChange(e.target.value)
+        }
+        className={`
           mt-[12px]
 
-          h-[58px]
+          w-full
 
-          rounded-full
+          rounded-[18px]
 
-          border-[2px]
-          border-[#DDDDDD]
+          border
+          border-[#E4E4E4]
 
-          bg-[#F7F7F7]
+          outline-none
 
-          px-[20px]
+          px-[18px]
 
-          flex
-          items-center
-          justify-between
-        "
-      >
-        <span
-          className="
-            text-[16px]
-            font-semibold
-            text-[#B1B1B1]
-          "
-        >
-          DD-MM-YYYY
-        </span>
-
-        <CalendarDays
-          className="
-            w-[24px]
-            h-[24px]
-
-            text-[#2D2D2D]
-          "
-        />
-      </div>
+          ${
+            mobile
+              ? `
+                h-[52px]
+                text-[15px]
+              `
+              : `
+                h-[64px]
+                text-[17px]
+              `
+          }
+        `}
+      />
     </div>
   );
 }

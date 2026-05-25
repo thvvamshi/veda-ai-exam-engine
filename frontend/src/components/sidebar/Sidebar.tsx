@@ -237,15 +237,11 @@ export default function Sidebar({
             className="
               w-[60px]
               h-[60px]
-
               rounded-full
-
               bg-[#E8F1E7]
-
               flex
               items-center
               justify-center
-
               text-[40px]
             "
           >

@@ -1,219 +1,178 @@
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { Assignment } from "../../types/assignment.types";
 
 type Props = {
-  title: string;
-  assigned: string;
-  due: string;
+  assignment: Assignment;
 };
 
-export default function AssignmentCard({
-  title,
-  assigned,
-  due,
-}: Props) {
-  const [open, setOpen] = useState(false);
+export default function AssignmentCard({ assignment }: Props) {
+  const navigate = useNavigate();
+
+  const getStatusStyles = () => {
+    switch (assignment.status) {
+      case "completed":
+        return "bg-[#ECFDF3] text-[#027A48]";
+
+      case "processing":
+        return "bg-[#FFF7E8] text-[#B54708]";
+
+      case "failed":
+        return "bg-[#FFECEC] text-[#D92D20]";
+
+      default:
+        return "bg-[#F4F4F4] text-[#444444]";
+    }
+  };
 
   return (
-    <div
+    <button
+      aria-label={`Open ${assignment.title}`}
+      onClick={() => navigate(`/ai-toolkit/${assignment._id}`)}
       className="
-        relative
-
         w-full
-
-        min-h-[172px]
-        lg:h-[172px]
 
         rounded-[32px]
 
-        bg-[#F5F5F5]
+        bg-white
 
-        px-[28px]
-        py-[28px]
+        p-[28px]
 
-        flex
-        flex-col
-        justify-between
+        text-left
+
+        transition-all
+        duration-200
+
+        hover:scale-[1.01]
+
+        shadow-[0px_4px_30px_rgba(0,0,0,0.05)]
       "
     >
-      {/* MENU BUTTON */}
-      <button
-        onClick={() => setOpen(!open)}
-        className="
-          absolute
-          top-[20px]
-          right-[20px]
-
-          w-[32px]
-          h-[32px]
-
-          flex
-          items-center
-          justify-center
-
-          text-[#989898]
-          text-[26px]
-          leading-none
-        "
-      >
-        ⋮
-      </button>
-
-      {/* DROPDOWN */}
-      {open && (
-        <div
-          className="
-            absolute
-            top-[70px]
-            right-[26px]
-
-            w-[220px]
-
-            rounded-[28px]
-
-            bg-white
-
-            p-[16px]
-
-            shadow-[0px_35px_60px_rgba(0,0,0,0.18)]
-
-            z-20
-          "
-        >
-          <button
-            className="
-              w-full
-
-              text-left
-
-              text-[18px]
-              font-medium
-              text-[#2B2B2B]
-
-              px-[14px]
-              py-[10px]
-
-              rounded-[14px]
-            "
-          >
-            View Assignment
-          </button>
-
-          <button
-            className="
-              w-full
-
-              mt-[8px]
-
-              text-left
-
-              text-[18px]
-              font-medium
-              text-[#D63A34]
-
-              bg-[#F4F4F4]
-
-              px-[14px]
-              py-[12px]
-
-              rounded-[14px]
-            "
-          >
-            Delete
-          </button>
-        </div>
-      )}
-
-      {/* TITLE */}
-      <h2
-        className="
-          max-w-[82%]
-
-          text-[28px]
-          md:text-[32px]
-          lg:text-[24px]
-
-          font-black
-
-          tracking-[-0.05em]
-
-          text-[#1F1F1F]
-
-          underline
-          underline-offset-[3px]
-
-          leading-[110%]
-        "
-      >
-        {title}
-      </h2>
-
-      {/* FOOTER */}
       <div
         className="
           flex
-          flex-row
-          items-center
+          items-start
           justify-between
-
-          gap-[12px]
         "
       >
-        {/* ASSIGNED */}
-        <div className="flex items-center gap-[4px]">
-          <span
+        <div>
+          <h2
             className="
-              text-[16px]
-              md:text-[18px]
-              lg:text-[16px]
+              text-[28px]
+              leading-[34px]
 
-              font-black
-              text-[#1D1D1D]
+              font-[800]
+
+              tracking-[-0.04em]
+
+              text-[#1F1F1F]
             "
           >
-            Assigned on :
-          </span>
+            {assignment.title}
+          </h2>
 
-          <span
+          <p
             className="
-              text-[16px]
-              md:text-[18px]
-              lg:text-[16px]
+              mt-[8px]
 
-              text-[#818181]
+              text-[15px]
+
+              text-[#7B7B7B]
             "
           >
-            {assigned}
-          </span>
+            Due: {assignment.dueDate}
+          </p>
         </div>
 
-        {/* DUE */}
-        <div className="flex items-center gap-[4px]">
-          <span
-            className="
-              text-[16px]
-              md:text-[18px]
-              lg:text-[16px]
+        <div
+          className={`
+            px-[14px]
+            h-[36px]
 
-              font-black
-              text-[#1D1D1D]
-            "
-          >
-            Due :
-          </span>
+            rounded-full
 
-          <span
-            className="
-              text-[16px]
-              md:text-[18px]
-              lg:text-[16px]
+            flex
+            items-center
+            justify-center
 
-              text-[#818181]
-            "
-          >
-            {due}
-          </span>
+            text-[13px]
+            font-[700]
+
+            capitalize
+
+            ${getStatusStyles()}
+          `}
+        >
+          {assignment.status}
         </div>
       </div>
-    </div>
+
+      <div
+        className="
+    mt-[28px]
+
+    flex
+    flex-wrap
+
+    gap-[10px]
+  "
+      >
+        {assignment?.questionTypes?.map((item, index) => (
+          <div
+            key={index}
+            className="
+          h-[38px]
+
+          rounded-full
+
+          bg-[#F4F4F4]
+
+          px-[14px]
+
+          flex
+          items-center
+
+          text-[14px]
+          font-[600]
+
+          text-[#444444]
+        "
+          >
+            {item.type} • {item.count} Q
+          </div>
+        ))}
+      </div>
+
+      <div
+        className="
+          mt-[30px]
+
+          flex
+          items-center
+          justify-between
+        "
+      >
+        <p
+          className="
+            text-[14px]
+
+            text-[#9B9B9B]
+          "
+        >
+          AI Assessment
+        </p>
+
+        <div
+          className="
+            text-[14px]
+            font-[700]
+
+            text-[#111111]
+          "
+        >
+          View Details →
+        </div>
+      </div>
+    </button>
   );
 }
