@@ -1,5 +1,3 @@
-// src/layouts/DashboardLayout.tsx
-
 import { Outlet } from "react-router-dom";
 
 import Sidebar from "../components/sidebar/Sidebar";
@@ -10,7 +8,7 @@ export default function DashboardLayout() {
       className="
         min-h-screen
 
-        bg-[#ECECEC]
+        bg-[linear-gradient(180deg,#EEEEEE_0%,#DADADA_100%)]
 
         p-[12px]
 
@@ -28,7 +26,7 @@ export default function DashboardLayout() {
         {/* SIDEBAR */}
         <Sidebar />
 
-        {/* PAGE */}
+        {/* PAGE CONTENT */}
         <main
           className="
             flex-1
