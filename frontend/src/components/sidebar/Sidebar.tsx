@@ -1,5 +1,3 @@
-// src/components/sidebar/Sidebar.tsx
-
 import {
   Link,
   useLocation,
@@ -30,6 +28,7 @@ const navItems = [
     href: "/assignment",
   },
 
+  // NOW DIRECT TOOLKIT ROUTE WORKS
   {
     icon: "✦",
     label: "AI Teacher’s Toolkit",
@@ -46,7 +45,8 @@ const navItems = [
 export default function Sidebar({
   assignmentsCount = 32,
 }: Props) {
-  const location = useLocation();
+  const location =
+    useLocation();
 
   return (
     <aside
@@ -101,7 +101,6 @@ export default function Sidebar({
           <h1
             className="
               text-[20px]
-              leading-none
 
               font-[800]
 
@@ -114,7 +113,7 @@ export default function Sidebar({
           </h1>
         </div>
 
-        {/* CTA BUTTON */}
+        {/* BUTTON */}
         <Link
           to="/upload-material"
           className="
@@ -134,11 +133,9 @@ export default function Sidebar({
             items-center
             justify-center
             gap-[12px]
-
-            shadow-[0px_18px_40px_rgba(0,0,0,0.18)]
           "
         >
-          <span className="text-[22px] text-white">
+          <span className="text-white text-[22px]">
             ✨
           </span>
 
@@ -147,48 +144,51 @@ export default function Sidebar({
               text-white
 
               text-[18px]
-              leading-none
 
               font-[500]
-
-              tracking-[-0.03em]
             "
           >
-            {location.pathname ===
-            "/ai-toolkit"
-              ? "AI Teacher’s Toolkit"
-              : "Create Assignment"}
+            Create Assignment
           </span>
         </Link>
 
-        {/* NAVIGATION */}
+        {/* NAV */}
         <div className="mt-[44px] flex flex-col gap-[8px]">
-          {navItems.map((item) => (
-            <Link
-              key={item.label}
-              to={item.href}
-            >
-              <SidebarItem
-                icon={item.icon}
-                label={item.label}
-                active={
-                  location.pathname === item.href
-                }
-                badge={
-                  item.label === "Assignments" &&
-                  assignmentsCount > 0
-                    ? String(assignmentsCount)
-                    : undefined
-                }
-              />
-            </Link>
-          ))}
+          {navItems.map((item) => {
+            const active =
+              item.href === "/"
+                ? location.pathname === "/"
+                : location.pathname.startsWith(
+                    item.href
+                  );
+
+            return (
+              <Link
+                key={item.label}
+                to={item.href}
+              >
+                <SidebarItem
+                  icon={item.icon}
+                  label={item.label}
+                  active={active}
+                  badge={
+                    item.label ===
+                      "Assignments" &&
+                    assignmentsCount > 0
+                      ? String(
+                          assignmentsCount
+                        )
+                      : undefined
+                  }
+                />
+              </Link>
+            );
+          })}
         </div>
       </div>
 
       {/* BOTTOM */}
       <div>
-        {/* SETTINGS */}
         <div
           className="
             flex
@@ -214,7 +214,6 @@ export default function Sidebar({
           </span>
         </div>
 
-        {/* SCHOOL CARD */}
         <div
           className="
             mt-[18px]
@@ -237,11 +236,15 @@ export default function Sidebar({
             className="
               w-[60px]
               h-[60px]
+
               rounded-full
+
               bg-[#E8F1E7]
+
               flex
               items-center
               justify-center
+
               text-[40px]
             "
           >
@@ -252,11 +255,8 @@ export default function Sidebar({
             <h3
               className="
                 text-[16px]
-                leading-[140%]
 
                 font-[700]
-
-                tracking-[-0.03em]
 
                 text-[#2B2B2B]
               "
@@ -269,7 +269,6 @@ export default function Sidebar({
                 mt-[4px]
 
                 text-[14px]
-                leading-[140%]
 
                 text-[#707070]
               "

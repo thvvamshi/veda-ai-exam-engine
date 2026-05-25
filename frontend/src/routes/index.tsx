@@ -14,10 +14,7 @@ import Loader from "../components/common/Loader";
 import NotFoundPage from "../pages/NotFoundPage";
 
 const HomePage = lazy(
-  () =>
-    import(
-      "../pages/HomePage"
-    )
+  () => import("../pages/HomePage")
 );
 
 const DashboardPage = lazy(
@@ -60,9 +57,6 @@ const router =
       element:
         <DashboardLayout />,
 
-      errorElement:
-        <NotFoundPage />,
-
       children: [
         {
           index: true,
@@ -93,9 +87,24 @@ const router =
             ),
         },
 
+        // IMPORTANT
+        // NOW TOOLKIT WORKS BOTH:
+        // /ai-toolkit
+        // /ai-toolkit/:id
+
         {
           path:
             "ai-toolkit",
+
+          element:
+            withSuspense(
+              <AIToolkitPage />
+            ),
+        },
+
+        {
+          path:
+            "ai-toolkit/:id",
 
           element:
             withSuspense(

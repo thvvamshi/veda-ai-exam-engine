@@ -1,6 +1,4 @@
-// src/api/assignment.api.ts
-
-import { api } from "./axios";
+import api from "./axios";
 
 export const createAssignmentAPI =
   async (formData: FormData) => {

@@ -1,4 +1,6 @@
-import { useEffect } from "react";
+import {
+  useEffect,
+} from "react";
 
 import { getAssignmentsAPI } from "../api/assignment.api";
 
@@ -21,11 +23,6 @@ export const useAssignmentPolling =
             const response =
               await getAssignmentsAPI();
 
-            console.log(
-              "Polling response:",
-              response
-            );
-
             if (!mounted)
               return;
 
@@ -34,18 +31,14 @@ export const useAssignmentPolling =
                 response
               )
                 ? response
-                : Array.isArray(
-                      response?.assignments
-                    )
-                  ? response.assignments
-                  : [];
+                : response?.assignments ||
+                  [];
 
             setAssignments(
               assignments
             );
           } catch (error) {
             console.error(
-              "Polling failed:",
               error
             );
           }
@@ -66,5 +59,5 @@ export const useAssignmentPolling =
           interval
         );
       };
-    }, [setAssignments]);
+    }, []);
   };

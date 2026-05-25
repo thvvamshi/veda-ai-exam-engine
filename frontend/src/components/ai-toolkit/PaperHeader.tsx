@@ -1,11 +1,18 @@
-// src/components/ai-toolkit/PaperHeader.tsx
-
 type Props = {
   mobile?: boolean;
+
+  schoolName: string;
+
+  subject: string;
+
+  className: string;
 };
 
 export default function PaperHeader({
   mobile = false,
+  schoolName,
+  subject,
+  className,
 }: Props) {
   return (
     <div className="text-center">
@@ -29,7 +36,7 @@ export default function PaperHeader({
           }
         `}
       >
-        Delhi Public School, Sector-4, Bokaro
+        {schoolName}
       </h1>
 
       <div
@@ -65,7 +72,7 @@ export default function PaperHeader({
             }
           `}
         >
-          Subject: English
+          Subject: {subject}
         </p>
 
         <p
@@ -87,7 +94,7 @@ export default function PaperHeader({
             }
           `}
         >
-          Class: 5th
+          Class: {className}
         </p>
       </div>
     </div>

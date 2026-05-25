@@ -1,256 +1,354 @@
-// src/components/ai-toolkit/PaperPreview.tsx
-
-import PaperHeader from "./PaperHeader";
-import QuestionSection from "./QuestionSection";
-import AnswerKeySection from "./AnswerKeySection";
+import { Assignment } from "../../types/assignment.types";
 
 type Props = {
+  assignment: Assignment;
+
   mobile?: boolean;
 };
 
 export default function PaperPreview({
+  assignment,
   mobile = false,
 }: Props) {
+  const paper =
+    assignment.generatedPaper;
+
+  if (!paper) {
+    return (
+      <div
+        className="
+          rounded-[32px]
+          bg-white
+          p-[32px]
+        "
+      >
+        No generated paper found
+      </div>
+    );
+  }
+
   return (
     <div
       className={`
         w-full
 
-        bg-[#FFFFFF]
+        rounded-[32px]
+
+        bg-white
 
         ${
           mobile
-            ? `
-              rounded-[34px]
-
-              p-[9px]
-            `
-            : `
-              rounded-[32px]
-
-              p-[16px]
-            `
+            ? "p-[20px]"
+            : "p-[40px]"
         }
       `}
     >
-      <div
-        className={`
-          w-full
-
-          bg-[#F8F8F8]
-
-          ${
-            mobile
-              ? `
-                rounded-[28px]
-
-                px-[18px]
-                py-[20px]
-              `
-              : `
-                rounded-[28px]
-
-                px-[40px]
-                py-[42px]
-              `
-          }
-        `}
-      >
-        <div
+      {/* SCHOOL */}
+      <div className="text-center">
+        <h1
           className={`
-            flex
-            flex-col
+            font-[800]
+            text-[#1F1F1F]
 
             ${
               mobile
-                ? "gap-[22px]"
-                : "gap-[34px]"
+                ? "text-[24px]"
+                : "text-[42px]"
             }
           `}
         >
-          <PaperHeader mobile={mobile} />
+          {paper.schoolName}
+        </h1>
 
-          <div
+        <div className="mt-[12px]">
+          <p
             className={`
-              flex
-              justify-between
+              font-[700]
 
               ${
                 mobile
-                  ? `
-                    flex-col
-                    gap-[6px]
-                  `
-                  : ""
+                  ? "text-[16px]"
+                  : "text-[28px]"
               }
             `}
           >
-            <p
-              className={`
-                font-[600]
-
-                text-[#1F1F1F]
-
-                ${
-                  mobile
-                    ? `
-                      text-[14px]
-                      leading-[22px]
-                    `
-                    : `
-                      text-[18px]
-                      leading-[30px]
-                    `
-                }
-              `}
-            >
-              Time Allowed: 45 minutes
-            </p>
-
-            <p
-              className={`
-                font-[600]
-
-                text-[#1F1F1F]
-
-                ${
-                  mobile
-                    ? `
-                      text-[14px]
-                      leading-[22px]
-                    `
-                    : `
-                      text-[18px]
-                      leading-[30px]
-                    `
-                }
-              `}
-            >
-              Maximum Marks: 20
-            </p>
-          </div>
+            Subject: {paper.subject}
+          </p>
 
           <p
             className={`
-              text-[#2B2B2B]
-
-              ${
-                mobile
-                  ? `
-                    text-[14px]
-                    leading-[28px]
-                  `
-                  : `
-                    text-[18px]
-                    leading-[36px]
-                  `
-              }
-            `}
-          >
-            All questions are compulsory unless
-            stated otherwise.
-          </p>
-
-          <div
-            className={`
-              flex
-              flex-col
-
-              ${
-                mobile
-                  ? "gap-[4px]"
-                  : "gap-[8px]"
-              }
-            `}
-          >
-            <p
-              className={`
-                text-[#1F1F1F]
-
-                ${
-                  mobile
-                    ? `
-                      text-[14px]
-                      leading-[24px]
-                    `
-                    : `
-                      text-[18px]
-                      leading-[30px]
-                    `
-                }
-              `}
-            >
-              Name: ______________
-            </p>
-
-            <p
-              className={`
-                text-[#1F1F1F]
-
-                ${
-                  mobile
-                    ? `
-                      text-[14px]
-                      leading-[24px]
-                    `
-                    : `
-                      text-[18px]
-                      leading-[30px]
-                    `
-                }
-              `}
-            >
-              Roll Number: ______________
-            </p>
-
-            <p
-              className={`
-                text-[#1F1F1F]
-
-                ${
-                  mobile
-                    ? `
-                      text-[14px]
-                      leading-[24px]
-                    `
-                    : `
-                      text-[18px]
-                      leading-[30px]
-                    `
-                }
-              `}
-            >
-              Class: 5th Section: ________
-            </p>
-          </div>
-
-          <h2
-            className={`
-              text-center
               font-[700]
 
-              text-[#1F1F1F]
-
               ${
                 mobile
-                  ? `
-                    text-[20px]
-                    leading-[28px]
-                  `
-                  : `
-                    text-[42px]
-                    leading-[54px]
-                  `
+                  ? "text-[16px]"
+                  : "text-[28px]"
               }
             `}
           >
-            Section A
-          </h2>
-
-          <QuestionSection mobile={mobile} />
-
-          <AnswerKeySection mobile={mobile} />
+            Class: {paper.className}
+          </p>
         </div>
+      </div>
+
+      {/* DETAILS */}
+      <div
+        className="
+          mt-[40px]
+
+          flex
+          items-center
+          justify-between
+        "
+      >
+        <p
+          className={`
+            font-[600]
+
+            ${
+              mobile
+                ? "text-[14px]"
+                : "text-[20px]"
+            }
+          `}
+        >
+          Time Allowed:
+          {" "}
+          {paper.timeAllowed} minutes
+        </p>
+
+        <p
+          className={`
+            font-[600]
+
+            ${
+              mobile
+                ? "text-[14px]"
+                : "text-[20px]"
+            }
+          `}
+        >
+          Maximum Marks:
+          {" "}
+          {paper.maxMarks}
+        </p>
+      </div>
+
+      {/* INSTRUCTIONS */}
+      <div className="mt-[28px]">
+        <p
+          className={`
+            ${
+              mobile
+                ? "text-[14px]"
+                : "text-[18px]"
+            }
+          `}
+        >
+          All questions are compulsory unless stated otherwise.
+        </p>
+      </div>
+
+      {/* STUDENT DETAILS */}
+      <div className="mt-[36px]">
+        <p>Name: __________________</p>
+
+        <p className="mt-[8px]">
+          Roll Number:
+          __________________
+        </p>
+
+        <p className="mt-[8px]">
+          Class Section:
+          __________________
+        </p>
+      </div>
+
+      {/* SECTIONS */}
+      <div className="mt-[60px]">
+        {paper.sections.map(
+          (section, sectionIndex) => (
+            <div
+              key={sectionIndex}
+              className="mb-[60px]"
+            >
+              {/* SECTION TITLE */}
+              <h2
+                className={`
+                  text-center
+                  font-[800]
+
+                  ${
+                    mobile
+                      ? "text-[24px]"
+                      : "text-[42px]"
+                  }
+                `}
+              >
+                Section{" "}
+                {String.fromCharCode(
+                  65 + sectionIndex
+                )}
+              </h2>
+
+              <div className="mt-[32px]">
+                <h3
+                  className={`
+                    font-[700]
+
+                    ${
+                      mobile
+                        ? "text-[18px]"
+                        : "text-[30px]"
+                    }
+                  `}
+                >
+                  {section.title}
+                </h3>
+
+                <p
+                  className={`
+                    italic
+                    text-[#666666]
+
+                    mt-[8px]
+
+                    ${
+                      mobile
+                        ? "text-[13px]"
+                        : "text-[18px]"
+                    }
+                  `}
+                >
+                  {section.instruction}
+                </p>
+              </div>
+
+              {/* QUESTIONS */}
+              <ol
+                className={`
+                  list-decimal
+
+                  ${
+                    mobile
+                      ? "pl-[22px]"
+                      : "pl-[30px]"
+                  }
+
+                  mt-[28px]
+
+                  space-y-[18px]
+                `}
+              >
+                {section.questions.map(
+                  (question) => (
+                    <li
+                      key={question._id}
+                      className={`
+                        leading-[180%]
+
+                        ${
+                          mobile
+                            ? "text-[15px]"
+                            : "text-[22px]"
+                        }
+                      `}
+                    >
+                      [
+                      {
+                        question.difficulty
+                      }
+                      ]
+                      {" "}
+                      {
+                        question.text
+                      }
+                      {" "}
+                      [
+                      {
+                        question.marks
+                      }
+                      {" "}
+                      Marks]
+                    </li>
+                  )
+                )}
+              </ol>
+            </div>
+          )
+        )}
+      </div>
+
+      {/* END */}
+      <div className="mt-[40px]">
+        <h2
+          className={`
+            font-[800]
+
+            ${
+              mobile
+                ? "text-[18px]"
+                : "text-[30px]"
+            }
+          `}
+        >
+          End of Question Paper
+        </h2>
+      </div>
+
+      {/* ANSWER KEY */}
+      <div className="mt-[70px]">
+        <h2
+          className={`
+            font-[800]
+
+            ${
+              mobile
+                ? "text-[24px]"
+                : "text-[42px]"
+            }
+          `}
+        >
+          Answer Key:
+        </h2>
+
+        <ol
+          className={`
+            list-decimal
+
+            ${
+              mobile
+                ? "pl-[22px]"
+                : "pl-[30px]"
+            }
+
+            mt-[28px]
+
+            space-y-[18px]
+          `}
+        >
+          {paper.answerKeys.map(
+            (
+              answer,
+              index
+            ) => (
+              <li
+                key={index}
+                className={`
+                  leading-[180%]
+
+                  ${
+                    mobile
+                      ? "text-[15px]"
+                      : "text-[22px]"
+                  }
+                `}
+              >
+                {answer.answer}
+              </li>
+            )
+          )}
+        </ol>
       </div>
     </div>
   );

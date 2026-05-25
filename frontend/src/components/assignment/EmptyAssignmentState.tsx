@@ -31,8 +31,8 @@ export default function EmptyAssignmentState({
 
             ${
               mobile
-                ? "w-[340px] h-[340px]"
-                : "w-[360px] h-[360px]"
+                ? "w-[270px] h-[270px]"
+                : "w-[300px] h-[300px]"
             }
           `}
         />
@@ -63,9 +63,9 @@ export default function EmptyAssignmentState({
             absolute
 
             ${
-              mobile
-                ? "top-[112px] left-[150px] text-[50px]"
-                : "top-[126px] left-[142px] text-[72px]"
+              mobile  
+                ? "top-[82px] left-[110px] text-[50px]"
+                : "top-[86px] left-[122px] text-[72px]"
             }
           `}
         >
@@ -85,7 +85,7 @@ export default function EmptyAssignmentState({
           ${
             mobile
               ? "mt-[28px] text-[25px]"
-              : "mt-[24px] text-[46px]"
+              : "mt-[24px] text-[35px]"
           }
         `}
       >
@@ -107,7 +107,7 @@ export default function EmptyAssignmentState({
               : `
                 mt-[12px]
                 max-w-[760px]
-                text-[22px]
+                text-[15px]
                 leading-[165%]
               `
           }

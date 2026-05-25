@@ -1,83 +1,73 @@
-// src/components/mobile/BottomNavbar.tsx
-
-import { Link, useLocation } from "react-router-dom";
-
-const items = [
-  {
-    label: "Home",
-    icon: "⌂",
-    href: "/",
-  },
-
-  {
-    label: "Assignments",
-    icon: "▣",
-    href: "/assignment",
-  },
-
-  {
-    label: "Library",
-    icon: "◫",
-    href: "/library",
-  },
-
-  {
-    label: "AI Toolkit",
-    icon: "✦",
-    href: "/ai-toolkit",
-  },
-];
+import {
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 
 export default function BottomNavbar() {
-  const location = useLocation();
+  const navigate =
+    useNavigate();
+
+  const location =
+    useLocation();
+
+  const navItems = [
+    {
+      label: "Home",
+      icon: "⌂",
+      path: "/",
+    },
+    {
+      label: "Assignments",
+      icon: "📄",
+      path: "/assignment",
+    },
+    {
+      label: "Create",
+      icon: "✚",
+      path: "/upload-material",
+    },
+  ];
 
   return (
     <div
       className="
-        lg:hidden
-
         fixed
-        bottom-[18px]
-        left-1/2
-        -translate-x-1/2
+        bottom-0
+        left-0
+        right-0
 
-        z-[999]
+        h-[84px]
 
-        w-[92%]
-        max-w-[390px]
+        bg-white
 
-        h-[86px]
-
-        rounded-[28px]
-
-        bg-[linear-gradient(180deg,#161616_0%,#090909_100%)]
-
-        px-[18px]
+        border-t
+        border-[#EAEAEA]
 
         flex
         items-center
-        justify-between
+        justify-around
 
-        shadow-[0px_20px_50px_rgba(0,0,0,0.28)]
+        z-50
       "
     >
-      {items.map((item) => {
+      {navItems.map((item) => {
         const active =
-          location.pathname === item.href;
+          location.pathname ===
+          item.path;
 
         return (
-          <Link
+          <button
             key={item.label}
-            to={item.href}
+            onClick={() =>
+              navigate(
+                item.path
+              )
+            }
             className="
               flex
               flex-col
               items-center
-              justify-center
-
-              gap-[6px]
-
-              min-w-[62px]
+              gap-[4px]
             "
           >
             <span
@@ -86,8 +76,8 @@ export default function BottomNavbar() {
 
                 ${
                   active
-                    ? "text-white"
-                    : "text-[#626262]"
+                    ? "opacity-100"
+                    : "opacity-50"
                 }
               `}
             >
@@ -96,21 +86,18 @@ export default function BottomNavbar() {
 
             <span
               className={`
-                text-[13px]
-                leading-none
-
-                font-[500]
+                text-[12px]
 
                 ${
                   active
-                    ? "text-white"
-                    : "text-[#626262]"
+                    ? "font-bold"
+                    : "font-medium"
                 }
               `}
             >
               {item.label}
             </span>
-          </Link>
+          </button>
         );
       })}
     </div>

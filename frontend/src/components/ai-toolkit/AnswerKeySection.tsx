@@ -1,11 +1,12 @@
-// src/components/ai-toolkit/AnswerKeySection.tsx
-
 type Props = {
   mobile?: boolean;
+
+  answers: any[];
 };
 
 export default function AnswerKeySection({
   mobile = false,
+  answers,
 }: Props) {
   return (
     <div
@@ -63,51 +64,33 @@ export default function AnswerKeySection({
           }
         `}
       >
-        <li
-          className={`
-            text-[#2B2B2B]
+        {answers?.map(
+          (
+            answer,
+            index
+          ) => (
+            <li
+              key={index}
+              className={`
+                text-[#2B2B2B]
 
-            ${
-              mobile
-                ? `
-                  text-[14px]
-                  leading-[28px]
-                `
-                : `
-                  text-[18px]
-                  leading-[36px]
-                `
-            }
-          `}
-        >
-          Electroplating is the process of
-          depositing a thin layer of metal on the
-          surface of another metal using electric
-          current.
-        </li>
-
-        <li
-          className={`
-            text-[#2B2B2B]
-
-            ${
-              mobile
-                ? `
-                  text-[14px]
-                  leading-[28px]
-                `
-                : `
-                  text-[18px]
-                  leading-[36px]
-                `
-            }
-          `}
-        >
-          A conductor allows the flow of electric
-          current, causing ions in the electrolyte
-          to move and enabling chemical changes at
-          electrodes.
-        </li>
+                ${
+                  mobile
+                    ? `
+                      text-[14px]
+                      leading-[28px]
+                    `
+                    : `
+                      text-[18px]
+                      leading-[36px]
+                    `
+                }
+              `}
+            >
+              {answer.answer}
+            </li>
+          )
+        )}
       </ol>
     </div>
   );

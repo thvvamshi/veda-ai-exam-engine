@@ -12,8 +12,12 @@ import Loader from "./components/common/Loader";
 
 import { useSocketEvents } from "./hooks/useSocketEvents";
 
+import { useAssignmentPolling } from "./hooks/useAssignmentPolling";
+
 export default function App() {
   useSocketEvents();
+
+  useAssignmentPolling();
 
   return (
     <Suspense

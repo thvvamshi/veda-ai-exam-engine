@@ -1,6 +1,18 @@
+import {
+  useNavigate,
+} from "react-router-dom";
+
 export default function CreateAssignmentButton() {
+  const navigate =
+    useNavigate();
+
   return (
     <button
+      onClick={() =>
+        navigate(
+          "/upload-material"
+        )
+      }
       className="
         hidden
         lg:flex
@@ -30,8 +42,6 @@ export default function CreateAssignmentButton() {
         className="
           text-white
           text-[22px]
-          font-semibold
-          leading-none
         "
       >
         +
@@ -42,7 +52,6 @@ export default function CreateAssignmentButton() {
           text-white
           text-[18px]
           font-bold
-          tracking-[-0.04em]
         "
       >
         Create Assignment
