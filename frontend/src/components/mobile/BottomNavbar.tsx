@@ -1,105 +1,157 @@
-export default function BottomNavbar() {
+// src/components/mobile/BottomNavbar.tsx
+
+import {
+  Grid2X2,
+  ClipboardList,
+  Library,
+  Sparkles,
+} from "lucide-react";
+
+type Props = {
+  hideFab?: boolean;
+};
+
+export default function BottomNavbar({
+  hideFab = false,
+}: Props) {
   return (
     <div
       className="
-        lg:hidden
-
         fixed
-        bottom-[16px]
-        left-1/2
-        -translate-x-1/2
-
-        w-[92%]
-        h-[94px]
-
-        rounded-[34px]
-
-        bg-[#121212]
-
-        px-[24px]
-
-        flex
-        items-center
-        justify-between
-
-        shadow-[0px_20px_50px_rgba(0,0,0,0.35)]
+        bottom-0
+        left-0
+        right-0
 
         z-50
+
+        lg:hidden
       "
     >
-      {/* FLOATING ACTION BUTTON */}
-      <button
-        className="
-          absolute
-          -top-[34px]
-          right-[12px]
+      <div className="relative">
+        {/* FAB */}
+        {!hideFab && (
+          <button
+            className="
+              absolute
+              right-[24px]
+              top-[-38px]
 
-          w-[82px]
-          h-[82px]
+              w-[92px]
+              h-[92px]
 
-          rounded-full
+              rounded-full
 
-          bg-[#F5F5F5]
+              bg-[#F5F5F5]
 
-          flex
-          items-center
-          justify-center
+              flex
+              items-center
+              justify-center
 
-          text-[#FF5B1F]
-          text-[48px]
-          font-light
+              shadow-[0px_10px_30px_rgba(0,0,0,0.18)]
+            "
+          >
+            <span
+              className="
+                text-[52px]
+                leading-none
 
-          shadow-[0px_24px_50px_rgba(0,0,0,0.28)]
-        "
-      >
-        +
-      </button>
+                text-[#FF6224]
+                font-light
+              "
+            >
+              +
+            </span>
+          </button>
+        )}
 
-      {[
-        ["⌘", "Home"],
-        ["▣", "Assignments"],
-        ["⊞", "Library"],
-        ["✦", "AI Toolkit"],
-      ].map(([icon, label], index) => (
+        {/* NAVBAR */}
         <div
-          key={index}
           className="
+            h-[94px]
+
+            rounded-t-[32px]
+
+            bg-[linear-gradient(180deg,#181818_0%,#101010_100%)]
+
+            px-[24px]
+            pb-[18px]
+
             flex
-            flex-col
             items-center
-            gap-[6px]
+            justify-between
           "
         >
-          <span
-            className={`
-              text-[24px]
-              ${
-                label === "Assignments"
-                  ? "text-white"
-                  : "text-[#5D5D5D]"
-              }
-            `}
-          >
-            {icon}
-          </span>
+          <NavItem
+            icon={<Grid2X2 size={24} />}
+            label="Home"
+          />
 
-          <span
-            className={`
-              text-[14px]
-              font-semibold
-              tracking-[-0.03em]
+          <NavItem
+            active
+            icon={<ClipboardList size={24} />}
+            label="Assignments"
+          />
 
-              ${
-                label === "Assignments"
-                  ? "text-white"
-                  : "text-[#5D5D5D]"
-              }
-            `}
-          >
-            {label}
-          </span>
+          <NavItem
+            icon={<Library size={24} />}
+            label="Library"
+          />
+
+          <NavItem
+            icon={<Sparkles size={24} />}
+            label="AI Toolkit"
+          />
         </div>
-      ))}
+      </div>
     </div>
+  );
+}
+
+type NavItemProps = {
+  icon: React.ReactNode;
+  label: string;
+  active?: boolean;
+};
+
+function NavItem({
+  icon,
+  label,
+  active = false,
+}: NavItemProps) {
+  return (
+    <button
+      className="
+        flex
+        flex-col
+        items-center
+        gap-[8px]
+      "
+    >
+      <div
+        className={
+          active
+            ? "text-white"
+            : "text-[#5C5C5C]"
+        }
+      >
+        {icon}
+      </div>
+
+      <span
+        className={`
+          text-[14px]
+          leading-[18px]
+          font-[500]
+
+          ${
+            active
+              ? "text-white"
+              : "text-[#5C5C5C]"
+          }
+        `}
+      >
+        {label}
+      </span>
+    </button>
   );
 }
