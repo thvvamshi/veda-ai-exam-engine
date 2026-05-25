@@ -1,35 +1,38 @@
 import SidebarItem from "./SidebarItem";
 
-export default function Sidebar() {
+type Props = {
+  assignmentsCount?: number;
+};
+
+export default function Sidebar({
+  assignmentsCount = 0,
+}: Props) {
   return (
     <aside
       className="
         hidden lg:flex
 
         w-[304px]
-        min-w-[304px]
-
-        h-[calc(100vh-24px)]
-        min-h-[750px]
+        h-[820px]
 
         flex-col
         justify-between
 
         rounded-[16px]
 
-        bg-[#FFFFFF]
+        bg-white
 
         p-[24px]
 
         shrink-0
-
-        overflow-hidden
       "
     >
       {/* TOP */}
       <div className="flex flex-col gap-[56px]">
+
         {/* LOGO + BUTTON */}
         <div className="flex flex-col gap-[32px]">
+
           {/* LOGO */}
           <div className="flex items-center gap-[12px]">
             <div
@@ -49,10 +52,8 @@ export default function Sidebar() {
                 justify-center
 
                 text-white
-                text-[30px]
-                font-black
-
-                shadow-[0px_14px_40px_rgba(0,0,0,0.18)]
+                text-[20px]
+                font-bold
               "
             >
               V
@@ -60,79 +61,53 @@ export default function Sidebar() {
 
             <h1
               className="
-                text-[25px]
-                font-black
+                text-[20px]
+                font-bold
+
                 tracking-[-0.04em]
+
                 text-[#101010]
-                leading-none
               "
             >
               VedaAI
             </h1>
           </div>
 
-          {/* CREATE BUTTON */}
+          {/* BUTTON */}
           <button
             className="
-              w-[256px]
-              h-[70px]
+              w-[251px]
+              h-[45px]
 
-              rounded-[24px]
+              rounded-[999px]
 
-              bg-[#FFFFFF]
+              border-[5px]
+              border-[#F28C6B]
+
+              bg-[#18181B]
+
+              text-white
+              text-[20px]
+              font-bold
+
+              shadow-[0_20px_30px_rgba(0,0,0,0.18)]
 
               flex
               items-center
               justify-center
+              gap-[12px]
             "
           >
-            <div
-              className="
-                w-full
-                h-[45px]
+            ✨
 
-                rounded-full
-
-                border-[4px]
-                border-[#EA805F]
-
-                bg-[linear-gradient(180deg,#30323A_0%,#191919_100%)]
-
-                shadow-[0px_18px_40px_rgba(0,0,0,0.18)]
-
-                flex
-                items-center
-                justify-center
-                gap-[10px]
-              "
-            >
-              <span
-                className="
-                  text-[19px]
-                  text-white
-                  leading-none
-                "
-              >
-                ✨
-              </span>
-
-              <span
-                className="
-                  text-white
-                  text-[18px]
-                  font-bold
-                  tracking-[-0.04em]
-                  leading-[140%]
-                "
-              >
-                Create Assignment
-              </span>
-            </div>
+            <span>
+              Create Assignment
+            </span>
           </button>
         </div>
 
         {/* MENU */}
-        <div className="w-[251px] flex flex-col gap-[8px]">
+        <div className="flex flex-col gap-[8px] w-[251px]">
           <SidebarItem icon="⌂" label="Home" />
 
           <SidebarItem icon="▣" label="My Groups" />
@@ -141,7 +116,11 @@ export default function Sidebar() {
             icon="📄"
             label="Assignments"
             active
-            badge="10"
+            badge={
+              assignmentsCount > 0
+                ? String(assignmentsCount)
+                : undefined
+            }
           />
 
           <SidebarItem
@@ -158,26 +137,25 @@ export default function Sidebar() {
 
       {/* BOTTOM */}
       <div className="flex flex-col gap-[16px]">
+
         {/* SETTINGS */}
         <div className="flex items-center gap-[8px]">
-          <span className="text-[20px] leading-none">
+          <span className="text-[20px]">
             ⚙️
           </span>
 
           <span
             className="
               text-[16px]
-              font-medium
-              tracking-[-0.04em]
               text-[#8B8B8B]
-              leading-[140%]
+              font-medium
             "
           >
             Settings
           </span>
         </div>
 
-        {/* SCHOOL CARD */}
+        {/* SCHOOL */}
         <div
           className="
             w-[256px]
@@ -192,8 +170,6 @@ export default function Sidebar() {
             flex
             items-center
             gap-[16px]
-
-            shrink-0
           "
         >
           {/* AVATAR */}
@@ -211,24 +187,21 @@ export default function Sidebar() {
               justify-center
 
               text-[28px]
-
-              shrink-0
             "
           >
             🐵
           </div>
 
           {/* TEXT */}
-          <div className="flex flex-col min-w-0">
+          <div className="flex flex-col">
             <h3
               className="
                 text-[16px]
                 font-bold
-                tracking-[-0.04em]
-                text-[#2C2C2C]
-                leading-[140%]
 
-                truncate
+                text-[#2C2C2C]
+
+                leading-[140%]
               "
             >
               Delhi Public School
@@ -237,12 +210,10 @@ export default function Sidebar() {
             <p
               className="
                 text-[14px]
-                font-medium
-                tracking-[-0.04em]
-                text-[#6F6F6F]
-                leading-[140%]
 
-                truncate
+                text-[#6F6F6F]
+
+                leading-[140%]
               "
             >
               Bokaro Steel City

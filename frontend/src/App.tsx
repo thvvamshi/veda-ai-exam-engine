@@ -1,10 +1,33 @@
+import {
+  Navigate,
+  Route,
+  Routes,
+} from "react-router-dom";
+
 import DashboardLayout from "./layouts/DashboardLayout";
 import DashboardPage from "./pages/DashboardPage";
 
 export default function App() {
   return (
-    <DashboardLayout>
-      <DashboardPage />
-    </DashboardLayout>
+    <Routes>
+      <Route
+        path="/assignment"
+        element={
+          <DashboardLayout>
+            <DashboardPage />
+          </DashboardLayout>
+        }
+      />
+
+      <Route
+        path="*"
+        element={
+          <Navigate
+            to="/assignment"
+            replace
+          />
+        }
+      />
+    </Routes>
   );
 }

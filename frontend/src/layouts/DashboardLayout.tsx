@@ -11,11 +11,8 @@ export default function DashboardLayout({
     <div
       className="
         min-h-screen
-
         bg-[#EAEAEA]
-
         p-[12px]
-
         overflow-x-hidden
       "
     >
@@ -23,7 +20,6 @@ export default function DashboardLayout({
         className="
           flex
           gap-[12px]
-
           h-[calc(100vh-24px)]
         "
       >
@@ -33,7 +29,6 @@ export default function DashboardLayout({
           className="
             flex-1
             min-w-0
-
             overflow-y-auto
           "
         >

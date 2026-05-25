@@ -1,25 +1,34 @@
 import AssignmentCard from "./AssignmentCard";
 
-const assignments = Array.from({ length: 6 });
+type Assignment = {
+  id: number;
+  title: string;
+  assigned: string;
+  due: string;
+};
 
-export default function AssignmentGrid() {
+type Props = {
+  assignments: Assignment[];
+};
+
+export default function AssignmentGrid({
+  assignments,
+}: Props) {
   return (
     <div
       className="
         grid
-
         grid-cols-1
         xl:grid-cols-2
-
         gap-[18px]
       "
     >
-      {assignments.map((_, index) => (
+      {assignments.map((assignment) => (
         <AssignmentCard
-          key={index}
-          title="Quiz on Electricity"
-          assigned="20-06-2025"
-          due="21-06-2025"
+          key={assignment.id}
+          title={assignment.title}
+          assigned={assignment.assigned}
+          due={assignment.due}
         />
       ))}
     </div>

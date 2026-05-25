@@ -1,13 +1,28 @@
+// src/pages/DashboardPage.tsx
+
 import AssignmentGrid from "../components/assignment/AssignmentGrid";
 import CreateAssignmentButton from "../components/assignment/CreateAssignmentButton";
+import EmptyAssignmentState from "../components/assignment/EmptyAssignmentState";
 import SearchBar from "../components/assignment/SearchBar";
 import TopHeader from "../components/assignment/TopHeader";
 import BottomNavbar from "../components/mobile/BottomNavbar";
 
+const assignments = [
+  {
+    id: 1,
+    title: "Math Homework", 
+    assigned: "2024-06-01",
+    due: "2024-06-10",
+  }
+
+];
+
 export default function DashboardPage() {
+  const hasAssignments = assignments.length > 0;
+
   return (
     <>
-      {/* DESKTOP */}
+      {/* ================= DESKTOP ================= */}
       <div
         className="
           hidden
@@ -20,59 +35,65 @@ export default function DashboardPage() {
       >
         <TopHeader />
 
-        {/* TITLE */}
-        <div className="px-[8px] pt-[6px]">
-          <div className="flex items-start gap-[12px]">
-            <div
-              className="
-                w-[15px]
-                h-[15px]
+        {hasAssignments ? (
+          <>
+            {/* TITLE */}
+            <div className="px-[8px] pt-[6px]">
+              <div className="flex items-start gap-[12px]">
+                <div
+                  className="
+                    w-[22px]
+                    h-[22px]
 
-                rounded-full
-                opacity-blur
+                    rounded-full
 
-                bg-[#56D25F]
+                    bg-[#56D25F]
 
-                mt-[12px]
-              "
-            />
+                    mt-[12px]
+                  "
+                />
 
-            <div>
-              <h1
-                className="
-                  text-[20px]
-                  font-black
+                <div>
+                  <h1
+                    className="
+                      text-[20px]
+                      font-black
 
-                  tracking-[-0.06em]
+                      tracking-[-0.06em]
 
-                  text-[#1C1C1C]
-                "
-              >
-                Assignments
-              </h1>
+                      text-[#1C1C1C]
+                    "
+                  >
+                    Assignments
+                  </h1>
 
-              <p
-                className="
-                  text-[14px]
-                  text-[#707070]
+                  <p
+                    className="
+                      text-[14px]
+                      text-[#707070]
 
-                  -mt-[6px]
-                "
-              >
-                Manage and create assignments for your classes.
-              </p>
+                      -mt-[6px]
+                    "
+                  >
+                    Manage and create assignments for your
+                    classes.
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
-        <SearchBar />
+            <SearchBar />
 
-        <AssignmentGrid />
+            <AssignmentGrid assignments={assignments} />
 
-        <CreateAssignmentButton />
+            <CreateAssignmentButton />
+          </>
+        ) : (
+          <EmptyAssignmentState />
+        )}
       </div>
 
-      {/* MOBILE */}
+      {/* ================= MOBILE ================= */}
       <div
         className="
           lg:hidden
@@ -80,7 +101,7 @@ export default function DashboardPage() {
           pb-[140px]
         "
       >
-        {/* MOBILE TOP HEADER */}
+        {/* MOBILE HEADER */}
         <div
           className="
             w-full
@@ -97,7 +118,7 @@ export default function DashboardPage() {
             justify-between
           "
         >
-          {/* LOGO */}
+          {/* LEFT */}
           <div className="flex items-center gap-[12px]">
             <div
               className="
@@ -133,6 +154,7 @@ export default function DashboardPage() {
 
           {/* RIGHT */}
           <div className="flex items-center gap-[14px]">
+            {/* BELL */}
             <div className="relative">
               <div
                 className="
@@ -147,7 +169,7 @@ export default function DashboardPage() {
                   items-center
                   justify-center
 
-                  text-[22px]
+                  text-[24px]
                 "
               >
                 🔔
@@ -169,6 +191,7 @@ export default function DashboardPage() {
               />
             </div>
 
+            {/* PROFILE */}
             <div
               className="
                 w-[44px]
@@ -180,62 +203,67 @@ export default function DashboardPage() {
               "
             />
 
+            {/* MENU */}
             <button className="text-[34px]">
               ☰
             </button>
           </div>
         </div>
 
-        {/* MOBILE TITLE */}
-        <div
-          className="
-            relative
+        {hasAssignments ? (
+          <>
+            {/* MOBILE TITLE */}
+            <div
+              className="
+                relative
 
-            flex
-            items-center
-            justify-center
+                flex
+                items-center
+                justify-center
 
-            mt-[22px]
-          "
-        >
-          <button
-            className="
-              absolute
-              left-0
+                mt-[22px]
+              "
+            >
+              <button
+                className="
+                  absolute
+                  left-0
 
-              w-[62px]
-              h-[62px]
+                  w-[62px]
+                  h-[62px]
 
-              rounded-full
+                  rounded-full
 
-              bg-[#F5F5F5]
+                  bg-[#F5F5F5]
 
-              text-[32px]
-            "
-          >
-            ←
-          </button>
+                  text-[32px]
+                "
+              >
+                ←
+              </button>
 
-          <h1
-            className="
-              text-[28px]
-              font-black
-              tracking-[-0.04em]
-            "
-          >
-            Assignments
-          </h1>
-        </div>
+              <h1
+                className="
+                  text-[28px]
+                  font-black
+                  tracking-[-0.04em]
+                "
+              >
+                Assignments
+              </h1>
+            </div>
 
-        {/* SEARCH */}
-        <div className="mt-[24px]">
-          <SearchBar />
-        </div>
+            <div className="mt-[24px]">
+              <SearchBar />
+            </div>
 
-        {/* CARDS */}
-        <div className="mt-[18px]">
-          <AssignmentGrid />
-        </div>
+            <div className="mt-[18px]">
+              <AssignmentGrid assignments={assignments} />
+            </div>
+          </>
+        ) : (
+          <EmptyAssignmentState mobile />
+        )}
 
         <BottomNavbar />
       </div>
