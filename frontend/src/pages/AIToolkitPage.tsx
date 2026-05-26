@@ -1,10 +1,6 @@
-import {
-  useEffect,
-} from "react";
+import { useEffect, useState } from "react";
 
-import {
-  useParams,
-} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import BottomNavbar from "../components/mobile/BottomNavbar";
 
@@ -16,221 +12,141 @@ import AIToolkitBanner from "../components/ai-toolkit/AIToolkitBanner";
 
 import PaperPreview from "../components/ai-toolkit/PaperPreview";
 
-import {
-  getAssignmentByIdAPI,
-} from "../api/assignment.api";
+import { getGeneratedPaperAPI } from "../api/generatedPaper.api";
 
-import { useAssignmentStore } from "../store/assignment.store";
+import { getAssignmentByIdAPI } from "../api/assignment.api";
 
 export default function AIToolkitPage() {
-  const { id } =
-    useParams();
+  const { id } = useParams();
 
-  const selectedAssignment =
-    useAssignmentStore(
-      (state) =>
-        state.selectedAssignment
-    );
+  const [paperData, setPaperData] =
+    useState<any>(null);
 
-  const setSelectedAssignment =
-    useAssignmentStore(
-      (state) =>
-        state.setSelectedAssignment
-    );
+  const [loading, setLoading] =
+    useState(true);
 
-  const loading =
-    useAssignmentStore(
-      (state) =>
-        state.loading
-    );
-
-  const setLoading =
-    useAssignmentStore(
-      (state) =>
-        state.setLoading
-    );
-
-  const error =
-    useAssignmentStore(
-      (state) =>
-        state.error
-    );
-
-  const setError =
-    useAssignmentStore(
-      (state) =>
-        state.setError
-    );
+  const [error, setError] =
+    useState("");
 
   useEffect(() => {
-    const fetchAssignment =
+    const fetchData =
       async () => {
-        // DEMO TOOLKIT PAGE
-        if (!id) {
-          setSelectedAssignment({
-            _id: "demo-id",
-
-            title:
-              "Science Mid Term Assessment",
-
-            dueDate:
-              "2026-06-20",
-
-            instructions:
-              "Attempt all questions.",
-
-            status:
-              "completed",
-
-            createdAt:
-              new Date().toISOString(),
-
-            questionTypes: [
-              {
-                type:
-                  "Short Answer",
-
-                count: 10,
-
-                marks: 2,
-              },
-
-              {
-                type:
-                  "Long Answer",
-
-                count: 5,
-
-                marks: 5,
-              },
-            ],
-
-            generatedPaper:
-              {
-                schoolName:
-                  "Delhi Public School, Bokaro",
-
-                subject:
-                  "Science",
-
-                className:
-                  "Grade 8",
-
-                timeAllowed: 90,
-
-                maxMarks: 50,
-
-                generatedMessage:
-                  "AI generated assessment paper.",
-
-                sections: [
-                  {
-                    title:
-                      "Short Answer Questions",
-
-                    instruction:
-                      "Attempt all questions.",
-
-                    questions:
-                      [
-                        {
-                          _id: "1",
-
-                          text:
-                            "Define electroplating.",
-
-                          difficulty:
-                            "easy",
-
-                          marks: 2,
-                        },
-
-                        {
-                          _id: "2",
-
-                          text:
-                            "Explain electrolysis.",
-
-                          difficulty:
-                            "moderate",
-
-                          marks: 2,
-                        },
-                      ],
-                  },
-                ],
-
-                answerKeys:
-                  [
-                    {
-                      questionId:
-                        "1",
-
-                      answer:
-                        "Electroplating is the process of coating one metal over another using electricity.",
-                    },
-
-                    {
-                      questionId:
-                        "2",
-
-                      answer:
-                        "Electrolysis is decomposition using electric current.",
-                    },
-                  ],
-              },
-          });
-
-          return;
-        }
-
         try {
           setLoading(true);
 
-          setError(null);
+          // ================= GENERATED PAPER =================
 
-          const response =
-            await getAssignmentByIdAPI(
-              id
+          const paperResponse =
+            await getGeneratedPaperAPI(
+              id as string,
             );
+
+          console.log(
+            "PAPER RESPONSE:",
+            paperResponse,
+          );
+
+          const generatedPaper =
+            paperResponse.data;
+
+          // ================= ASSIGNMENT =================
+
+          const assignmentResponse =
+            await getAssignmentByIdAPI(
+              generatedPaper.assignmentId,
+            );
+
+          console.log(
+            "ASSIGNMENT RESPONSE:",
+            assignmentResponse,
+          );
 
           const assignment =
-            response?.assignment;
+            assignmentResponse.data;
 
-          if (assignment) {
-            setSelectedAssignment(
-              assignment
-            );
-          }
+          // ================= TOTAL MARKS =================
+
+          const totalMarks =
+            generatedPaper.sections?.reduce(
+              (
+                total: number,
+                section: any,
+              ) =>
+                total +
+                section.questions.reduce(
+                  (
+                    sum: number,
+                    question: any,
+                  ) =>
+                    sum +
+                    (question.marks ||
+                      0),
+                  0,
+                ),
+              0,
+            ) || 0;
+
+          // ================= MERGED DATA =================
+
+          const mergedData = {
+            ...generatedPaper,
+
+            subject:
+              assignment.subject,
+
+            className:
+              assignment.className,
+
+            schoolName:
+              assignment.schoolName,
+
+            teacherName:
+              assignment.teacherName,
+
+            maxMarks:
+              totalMarks,
+          };
+
+          console.log(
+            "FINAL MERGED DATA:",
+            mergedData,
+          );
+
+          setPaperData(
+            mergedData,
+          );
         } catch (error: any) {
           console.error(error);
 
           setError(
             error.message ||
-              "Failed to fetch assignment"
+              "Failed to load paper",
           );
         } finally {
           setLoading(false);
         }
       };
 
-    fetchAssignment();
+    if (id) {
+      fetchData();
+    }
   }, [id]);
+
+  // ================= LOADING =================
 
   if (loading) {
     return <Loader />;
   }
 
-  if (
-    error ||
-    !selectedAssignment
-  ) {
+  // ================= ERROR =================
+
+  if (error || !paperData) {
     return (
       <div className="p-[24px]">
         <ErrorState
           message={
             error ||
-            "Assignment not found"
+            "Generated paper not found"
           }
         />
       </div>
@@ -239,7 +155,8 @@ export default function AIToolkitPage() {
 
   return (
     <>
-      {/* DESKTOP */}
+      {/* ================= DESKTOP ================= */}
+
       <div
         className="
           hidden
@@ -269,20 +186,21 @@ export default function AIToolkitPage() {
           "
         >
           <AIToolkitBanner
-            assignment={
-              selectedAssignment
+            generatedPaper={
+              paperData
             }
           />
 
           <PaperPreview
             assignment={
-              selectedAssignment
+              paperData
             }
           />
         </div>
       </div>
 
-      {/* MOBILE */}
+      {/* ================= MOBILE ================= */}
+
       <div
         className="
           lg:hidden
@@ -293,8 +211,8 @@ export default function AIToolkitPage() {
       >
         <AIToolkitBanner
           mobile
-          assignment={
-            selectedAssignment
+          generatedPaper={
+            paperData
           }
         />
 
@@ -302,7 +220,7 @@ export default function AIToolkitPage() {
           <PaperPreview
             mobile
             assignment={
-              selectedAssignment
+              paperData
             }
           />
         </div>

@@ -1,31 +1,43 @@
+// src/components/upload-material/UploadMaterialActions.tsx
 
 type Props = {
   mobile?: boolean;
 
-  onSubmit: () => void;
+  step: number;
 
   loading?: boolean;
+
+  onPrevious: () => void;
+
+  onNext: () => void;
+
+  onSubmit: () => void;
 };
 
 export default function UploadMaterialActions({
   mobile = false,
-  onSubmit,
+  step,
   loading = false,
+  onPrevious,
+  onNext,
+  onSubmit,
 }: Props) {
   return (
     <div
       className={`
+        flex
+        items-center
+        justify-between
+
         ${
           mobile
             ? `
               fixed
-              bottom-[88px]
+              bottom-[90px]
               left-0
               right-0
 
               px-[16px]
-
-              z-40
             `
             : `
               mt-[28px]
@@ -38,43 +50,48 @@ export default function UploadMaterialActions({
         }
       `}
     >
-      <div
-        className="
-          w-full
+      {/* PREVIOUS */}
 
-          rounded-[28px]
+      <button
+        onClick={onPrevious}
+        className="
+          h-[56px]
+
+          rounded-full
+
+          border
 
           bg-white
 
-          p-[18px]
+          px-[28px]
 
-          shadow-[0px_12px_40px_rgba(0,0,0,0.08)]
-
-          flex
-          items-center
-          justify-between
+          font-[600]
         "
       >
+        ← Previous
+      </button>
+
+      {/* NEXT / GENERATE */}
+
+      {step === 1 ? (
         <button
+          onClick={onNext}
           className="
             h-[56px]
 
             rounded-full
 
-            border
-            border-[#DADADA]
+            bg-[#111111]
 
-            px-[28px]
+            px-[34px]
 
-            text-[16px]
-            font-[600]
-
-            text-[#1F1F1F]
+            text-white
+            font-[700]
           "
         >
-          Previous
+          Next →
         </button>
-
+      ) : (
         <button
           disabled={loading}
           onClick={onSubmit}
@@ -85,20 +102,17 @@ export default function UploadMaterialActions({
 
             bg-[#111111]
 
-            px-[32px]
+            px-[34px]
 
             text-white
-            text-[16px]
             font-[700]
-
-            disabled:opacity-50
           "
         >
           {loading
-            ? "Creating..."
+            ? "Generating..."
             : "Generate Assignment"}
         </button>
-      </div>
+      )}
     </div>
   );
 }

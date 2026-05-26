@@ -1,93 +1,143 @@
-// src/hooks/useCreateAssignment.ts
+import toast from "react-hot-toast";
 
-import { createAssignmentAPI } from "../api/assignment.api";
+import {
+  createAssignmentAPI,
+  generateAssignmentAPI,
+} from "../api/assignment.api";
 
 import { useAssignmentStore } from "../store/assignment.store";
 
 import { useNotificationStore } from "../store/notification.store";
 
-export const useCreateAssignment = () => {
-  const addAssignment =
-    useAssignmentStore(
-      (state) => state.addAssignment
-    );
-
-  const setLoading =
-    useAssignmentStore(
-      (state) => state.setLoading
-    );
-
-  const setError =
-    useAssignmentStore(
-      (state) => state.setError
-    );
-
-  const addNotification =
-    useNotificationStore(
-      (state) => state.addNotification
-    );
-
-  const createAssignment = async (
-    formData: FormData
-  ) => {
-    try {
-      setLoading(true);
-
-      setError(null);
-
-      const response =
-        await createAssignmentAPI(
-          formData
-        );
-
-      if (!response?.assignment) {
-        throw new Error(
-          "Invalid assignment response"
-        );
-      }
-
-      addAssignment(
-        response.assignment
+export const useCreateAssignment =
+  () => {
+    const addAssignment =
+      useAssignmentStore(
+        (state) =>
+          state.addAssignment
       );
 
-      addNotification({
-        id: crypto.randomUUID(),
+    const setLoading =
+      useAssignmentStore(
+        (state) =>
+          state.setLoading
+      );
 
-        title: "Assignment Created",
+    const setError =
+      useAssignmentStore(
+        (state) =>
+          state.setError
+      );
 
-        message:
-          "Assignment submitted successfully",
+    const addNotification =
+      useNotificationStore(
+        (state) =>
+          state.addNotification
+      );
 
-        read: false,
-      });
+    const createAssignment =
+      async (
+        formData: FormData
+      ) => {
+        const toastId =
+          toast.loading(
+            "Creating assignment..."
+          );
 
-      return response;
-    } catch (error: any) {
-      console.error(error);
+        try {
+          setLoading(true);
 
-      const message =
-        error?.message ||
-        "Failed to create assignment";
+          setError(null);
 
-      setError(message);
+          // CREATE
+          const response =
+            await createAssignmentAPI(
+              formData
+            );
 
-      addNotification({
-        id: crypto.randomUUID(),
+          const assignment =
+            response?.data;
 
-        title: "Creation Failed",
+          if (!assignment) {
+            throw new Error(
+              "Invalid assignment response"
+            );
+          }
 
-        message,
+          // ADD TO STORE
+          addAssignment({
+            ...assignment,
 
-        read: false,
-      });
+            status:
+              "processing",
+          });
 
-      throw error;
-    } finally {
-      setLoading(false);
-    }
+          // GENERATE AI PAPER
+          await generateAssignmentAPI(
+            assignment.id
+          );
+
+          // NOTIFICATION
+          addNotification({
+            id: crypto.randomUUID(),
+
+            title:
+              "AI Generation Started",
+
+            message:
+              "Question paper generation started.",
+
+            read: false,
+
+            createdAt:
+              new Date().toISOString(),
+          });
+
+          toast.success(
+            "Assignment created successfully",
+            {
+              id: toastId,
+            }
+          );
+
+          return assignment;
+        } catch (error: any) {
+          console.error(error);
+
+          const message =
+            error?.message ||
+            "Failed to create assignment";
+
+          setError(message);
+
+          addNotification({
+            id: crypto.randomUUID(),
+
+            title:
+              "Creation Failed",
+
+            message,
+
+            read: false,
+
+            createdAt:
+              new Date().toISOString(),
+          });
+
+          toast.error(
+            message,
+            {
+              id: toastId,
+            }
+          );
+
+          throw error;
+        } finally {
+          setLoading(false);
+        }
+      };
+
+    return {
+      createAssignment,
+    };
   };
-
-  return {
-    createAssignment,
-  };
-};

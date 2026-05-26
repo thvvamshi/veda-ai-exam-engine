@@ -1,41 +1,66 @@
-// src/components/upload-material/UploadMaterialStepper.tsx
-
 type Props = {
   mobile?: boolean;
+
+  step: number;
 };
 
 export default function UploadMaterialStepper({
   mobile = false,
+  step,
 }: Props) {
+  const activeClass =
+    "bg-[#5B5B5B]";
+
+  const inactiveClass =
+    "bg-[#E7E7E7]";
+
   if (mobile) {
     return (
       <div
         className="
+          mt-[20px]
+
           flex
           items-center
           gap-[10px]
         "
       >
+        {/* STEP 1 */}
         <div
-          className="
+          className={`
             flex-1
             h-[8px]
 
             rounded-full
 
-            bg-[#5B5B5B]
-          "
+            transition-all
+            duration-300
+
+            ${
+              step >= 1
+                ? activeClass
+                : inactiveClass
+            }
+          `}
         />
 
+        {/* STEP 2 */}
         <div
-          className="
+          className={`
             flex-1
             h-[8px]
 
             rounded-full
 
-            bg-[#E9E9E9]
-          "
+            transition-all
+            duration-300
+
+            ${
+              step >= 2
+                ? activeClass
+                : inactiveClass
+            }
+          `}
         />
       </div>
     );
@@ -44,6 +69,9 @@ export default function UploadMaterialStepper({
   return (
     <div
       className="
+        mt-[32px]
+
+        w-full
         max-w-[760px]
 
         mx-auto
@@ -53,27 +81,43 @@ export default function UploadMaterialStepper({
         gap-[14px]
       "
     >
+      {/* STEP 1 */}
       <div
-        className="
+        className={`
           flex-1
           h-[6px]
 
           rounded-full
 
-          bg-[#5B5B5B]
-        "
+          transition-all
+          duration-300
+
+          ${
+            step >= 1
+              ? activeClass
+              : inactiveClass
+          }
+        `}
       />
 
+      {/* STEP 2 */}
       <div
-        className="
+        className={`
           flex-1
           h-[6px]
 
           rounded-full
 
-          bg-[#E9E9E9]
-        "
-      />
+          transition-all
+          duration-300
+
+          ${
+            step >= 2
+              ? activeClass
+              : inactiveClass
+          }
+        `}
+      />  
     </div>
   );
 }

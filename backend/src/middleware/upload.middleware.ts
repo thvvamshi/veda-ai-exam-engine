@@ -4,54 +4,74 @@ import { CloudinaryStorage } from "multer-storage-cloudinary";
 
 import cloudinary from "../config/cloudinary";
 
-const storage = new CloudinaryStorage({
-  cloudinary,
+const storage =
+  new CloudinaryStorage({
+    cloudinary,
 
-  params: async (req, file) => ({
-    folder: "veda-ai-assignments",
+    params: async (
+      req,
+      file
+    ) => ({
+      folder:
+        "veda-ai-assignments",
 
-    resource_type: file.mimetype === "application/pdf" ? "raw" : "auto",
+      resource_type:
+        "auto",
 
-    access_mode: "public",
-
-    public_id: `${Date.now()}-${file.originalname
-      .split(".")[0]
-      .replace(/\s+/g, "-")}`,
-  }),
-});
+      public_id: `${Date.now()}-${file.originalname
+        .split(".")[0]
+        .replace(/\s+/g, "-")}`,
+    }),
+  });
 
 export const upload = multer({
   storage,
 
   limits: {
-    fileSize: 30 * 1024 * 1024,
+    fileSize:
+      30 *
+      1024 *
+      1024,
   },
 
-  fileFilter: (req, file, cb) => {
+  fileFilter: (
+    req,
+    file,
+    cb
+  ) => {
     try {
-      const allowedMimeTypes = [
-        "application/pdf",
+      const allowedMimeTypes =
+        [
+          "application/pdf",
 
-        "application/msword",
+          "application/msword",
 
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 
-        "image/png",
+          "image/png",
 
-        "image/jpeg",
-      ];
+          "image/jpeg",
+        ];
 
-      if (!allowedMimeTypes.includes(file.mimetype)) {
+      if (
+        !allowedMimeTypes.includes(
+          file.mimetype
+        )
+      ) {
         return cb(
           new Error(
-            "Invalid file type. Only PDF, DOC, DOCX, PNG, JPG are allowed.",
-          ),
+            "Invalid file type. Only PDF, DOC, DOCX, PNG, JPG are allowed."
+          )
         );
       }
 
       cb(null, true);
     } catch (error) {
-      cb(new Error("File validation failed"));
+      cb(
+        new Error(
+          "File validation failed"
+        )
+      );
     }
   },
 });

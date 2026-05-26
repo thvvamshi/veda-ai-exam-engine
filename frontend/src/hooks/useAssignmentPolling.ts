@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useRef,
 } from "react";
 
 import { getAssignmentsAPI } from "../api/assignment.api";
@@ -14,6 +15,9 @@ export const useAssignmentPolling =
           state.setAssignments
       );
 
+    const previousDataRef =
+      useRef("");
+
     useEffect(() => {
       let mounted = true;
 
@@ -26,26 +30,56 @@ export const useAssignmentPolling =
             if (!mounted)
               return;
 
-            const assignments =
+            let assignments =
+              [];
+
+            if (
               Array.isArray(
                 response
               )
-                ? response
-                : response?.assignments ||
-                  [];
+            ) {
+              assignments =
+                response;
+            } else if (
+              Array.isArray(
+                response?.assignments
+              )
+            ) {
+              assignments =
+                response.assignments;
+            }
 
-            setAssignments(
-              assignments
-            );
+            // IMPORTANT:
+            // ONLY UPDATE IF DATA CHANGED
+
+            const serialized =
+              JSON.stringify(
+                assignments
+              );
+
+            if (
+              previousDataRef.current !==
+              serialized
+            ) {
+              previousDataRef.current =
+                serialized;
+
+              setAssignments(
+                assignments
+              );
+            }
           } catch (error) {
             console.error(
+              "Polling failed:",
               error
             );
           }
         };
 
+      // INITIAL FETCH
       fetchAssignments();
 
+      // POLLING
       const interval =
         setInterval(
           fetchAssignments,
@@ -59,5 +93,5 @@ export const useAssignmentPolling =
           interval
         );
       };
-    }, []);
+    }, [setAssignments]);
   };

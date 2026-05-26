@@ -27,8 +27,6 @@ export const useAssignments =
       );
 
     useEffect(() => {
-      let mounted = true;
-
       const fetchAssignments =
         async () => {
           try {
@@ -40,83 +38,25 @@ export const useAssignments =
               await getAssignmentsAPI();
 
             console.log(
-              "Assignments Response:",
+              "API RESPONSE:",
               response
             );
 
-            if (!mounted)
-              return;
-
-            let assignments =
-              [];
-
-            // ARRAY DIRECTLY
-            if (
-              Array.isArray(
-                response
-              )
-            ) {
-              assignments =
-                response;
-            }
-
-            // RESPONSE.ASSIGNMENTS
-            else if (
-              Array.isArray(
-                response?.assignments
-              )
-            ) {
-              assignments =
-                response.assignments;
-            }
-
-            // RESPONSE.DATA
-            else if (
-              Array.isArray(
-                response?.data
-              )
-            ) {
-              assignments =
-                response.data;
-            }
-
-            // FALLBACK
-            else {
-              assignments =
-                [];
-            }
-
+            // IMPORTANT
             setAssignments(
-              assignments
+              response?.data || []
             );
           } catch (error: any) {
-            console.error(
-              "Assignments Error:",
-              error
-            );
-
-            if (!mounted)
-              return;
-
-            setAssignments([]);
+            console.error(error);
 
             setError(
-              error?.message ||
-                "Failed to fetch assignments"
+              error.message
             );
           } finally {
-            if (mounted) {
-              setLoading(
-                false
-              );
-            }
+            setLoading(false);
           }
         };
 
       fetchAssignments();
-
-      return () => {
-        mounted = false;
-      };
     }, []);
   };

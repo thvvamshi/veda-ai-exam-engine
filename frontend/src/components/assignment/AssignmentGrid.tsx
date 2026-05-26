@@ -35,7 +35,7 @@ export default function AssignmentGrid({
         (assignment) => (
           <AssignmentCard
             key={
-              assignment._id
+              assignment.id
             }
             assignment={
               assignment

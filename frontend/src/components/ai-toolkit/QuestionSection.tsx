@@ -17,65 +17,60 @@ export default function QuestionSection({
   return (
     <div
       className={`
-        flex
-        flex-col
-
         ${
           mobile
-            ? "gap-[12px]"
-            : "gap-[18px]"
+            ? "mt-[40px]"
+            : "mt-[70px]"
         }
       `}
     >
-      <div>
-        <h2
-          className={`
-            font-[700]
+      <h2
+        className={`
+          font-[800]
 
-            text-[#1F1F1F]
+          text-[#1F1F1F]
 
-            ${
-              mobile
-                ? `
-                  text-[16px]
-                  leading-[24px]
-                `
-                : `
-                  text-[32px]
-                  leading-[42px]
-                `
-            }
-          `}
-        >
-          {title}
-        </h2>
+          ${
+            mobile
+              ? `
+                text-[24px]
+                leading-[34px]
+              `
+              : `
+                text-[42px]
+                leading-[56px]
+              `
+          }
+        `}
+      >
+        {title}
+      </h2>
 
-        <p
-          className={`
-            italic
+      <p
+        className={`
+          italic
 
-            text-[#555555]
+          text-[#666666]
 
-            ${
-              mobile
-                ? `
-                  mt-[4px]
+          ${
+            mobile
+              ? `
+                mt-[8px]
 
-                  text-[13px]
-                  leading-[20px]
-                `
-                : `
-                  mt-[6px]
+                text-[14px]
+                leading-[24px]
+              `
+              : `
+                mt-[12px]
 
-                  text-[18px]
-                  leading-[28px]
-                `
-            }
-          `}
-        >
-          {instruction}
-        </p>
-      </div>
+                text-[22px]
+                leading-[36px]
+              `
+          }
+        `}
+      >
+        {instruction}
+      </p>
 
       <ol
         className={`
@@ -86,12 +81,16 @@ export default function QuestionSection({
               ? `
                 pl-[22px]
 
-                space-y-[10px]
-              `
-              : `
-                pl-[28px]
+                mt-[20px]
 
                 space-y-[18px]
+              `
+              : `
+                pl-[32px]
+
+                mt-[36px]
+
+                space-y-[28px]
               `
           }
         `}
@@ -109,18 +108,26 @@ export default function QuestionSection({
                 ${
                   mobile
                     ? `
-                      text-[14px]
-                      leading-[28px]
+                      text-[16px]
+                      leading-[34px]
                     `
                     : `
-                      text-[18px]
-                      leading-[36px]
+                      text-[24px]
+                      leading-[48px]
                     `
                 }
               `}
             >
-              {question.text} [
-              {question.marks} Marks]
+              [
+              {question.difficulty}
+              ]
+              {" "}
+              {question.text}
+              {" "}
+              [
+              {question.marks}
+              {" "}
+              Marks]
             </li>
           )
         )}

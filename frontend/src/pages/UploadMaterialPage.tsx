@@ -1,58 +1,150 @@
-// src/pages/UploadMaterialPage.tsx
-
 import { useState } from "react";
+
+import { useNavigate } from "react-router-dom";
 
 import BottomNavbar from "../components/mobile/BottomNavbar";
 
 import UploadMaterialHeader from "../components/upload-material/UploadMaterialHeader";
+
 import UploadMaterialStepper from "../components/upload-material/UploadMaterialStepper";
+
 import UploadDropzone from "../components/upload-material/UploadDropzone";
+
 import DueDateInput from "../components/upload-material/DueDateInput";
+
 import QuestionTypeList from "../components/upload-material/QuestionTypeList";
+
 import AdditionalInfoBox from "../components/upload-material/AdditionalInfoBox";
+
 import UploadMaterialActions from "../components/upload-material/UploadMaterialActions";
 
+import { useCreateAssignment } from "../hooks/useCreateAssignment";
+
 export default function UploadMaterialPage() {
-  /* ---------------- STATE ---------------- */
+  const navigate = useNavigate();
 
-  const [
-    uploadedFile,
-    setUploadedFile,
-  ] = useState<File | null>(
-    null
-  );
+  const { createAssignment } = useCreateAssignment();
 
-  const [dueDate, setDueDate] =
-    useState("");
+  /* ================= STEP ================= */
 
-  const [
-    instructions,
-    setInstructions,
-  ] = useState("");
+  const [step, setStep] = useState(1);
 
-  const [
-    questionTypes,
-    setQuestionTypes,
-  ] = useState([
+  /* ================= STEP 1 ================= */
+
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+
+  const [instructions, setInstructions] = useState("");
+
+  const [questionTypes, setQuestionTypes] = useState([
     {
-      type: "MCQ",
-      count: 5,
+      type: "Multiple Choice Questions",
+
+      count: 4,
+
       marks: 1,
+    },
+
+    {
+      type: "Short Questions",
+
+      count: 3,
+
+      marks: 2,
     },
   ]);
 
-  const [loading] =
-    useState(false);
+  /* ================= STEP 2 ================= */
 
-  /* ---------------- SUBMIT ---------------- */
+  const [title, setTitle] = useState("");
 
-  const handleSubmit = () => {
-    console.log({
-      uploadedFile,
-      dueDate,
-      instructions,
-      questionTypes,
-    });
+  const [subject, setSubject] = useState("");
+
+  const [className, setClassName] = useState("");
+
+  const [dueDate, setDueDate] = useState("");
+
+  /* ================= SETTINGS ================= */
+
+  const [schoolName] = useState(
+    localStorage.getItem("schoolName") || "Delhi Public School",
+  );
+
+  const [teacherName] = useState(
+    localStorage.getItem("teacherName") || "John Doe",
+  );
+
+  /* ================= LOADING ================= */
+
+  const [loading, setLoading] = useState(false);
+
+  /* ================= NEXT ================= */
+
+  const handleNext = () => {
+    if (!uploadedFile) {
+      alert("Please upload study material");
+
+      return;
+    }
+
+    setStep(2);
+  };
+
+  /* ================= PREVIOUS ================= */
+
+  const handlePrevious = () => {
+    if (step === 1) {
+      navigate(-1);
+
+      return;
+    }
+
+    setStep(1);
+  };
+
+  /* ================= SUBMIT ================= */
+
+  const handleSubmit = async () => {
+    try {
+      if (!title || !subject || !className || !dueDate) {
+        alert("Please fill all assignment details");
+
+        return;
+      }
+
+      setLoading(true);
+
+      const formData = new FormData();
+
+      formData.append("title", title);
+
+      formData.append("subject", subject);
+
+      formData.append("className", className);
+
+      formData.append("schoolName", schoolName);
+
+      formData.append("teacherName", teacherName);
+
+      formData.append("dueDate", dueDate);
+
+      formData.append("instructions", instructions);
+
+      formData.append("additionalInstructions", instructions);
+
+      formData.append("questionTypes", JSON.stringify(questionTypes));
+
+      if (uploadedFile) {
+        formData.append("file", uploadedFile);
+      }
+
+      await createAssignment(formData);
+
+      navigate("/assignment");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -67,7 +159,6 @@ export default function UploadMaterialPage() {
           flex-col
 
           w-full
-          h-full
 
           overflow-y-auto
 
@@ -78,7 +169,7 @@ export default function UploadMaterialPage() {
       >
         <UploadMaterialHeader />
 
-        <UploadMaterialStepper />
+        <UploadMaterialStepper step={step} />
 
         <div
           className="
@@ -91,7 +182,7 @@ export default function UploadMaterialPage() {
 
             rounded-[32px]
 
-            bg-[#FFFFFF]
+            bg-white
 
             p-[40px]
 
@@ -99,7 +190,7 @@ export default function UploadMaterialPage() {
           "
         >
           <div className="flex flex-col gap-[32px]">
-            {/* TITLE */}
+            {/* HEADER */}
 
             <div>
               <h2
@@ -114,7 +205,7 @@ export default function UploadMaterialPage() {
                   text-[#1F1F1F]
                 "
               >
-                Assignment Details
+                {step === 1 ? "Upload Material" : "Assignment Details"}
               </h2>
 
               <p
@@ -127,59 +218,170 @@ export default function UploadMaterialPage() {
                   text-[#7B7B7B]
                 "
               >
-                Basic information
-                about your assignment
+                {step === 1
+                  ? "Upload material for AI generation"
+                  : "Basic information about your assignment"}
               </p>
             </div>
 
-            {/* DROPZONE */}
+            {/* ================= STEP 1 ================= */}
 
-            <UploadDropzone
-              uploadedFile={
-                uploadedFile
-              }
-              setUploadedFile={
-                setUploadedFile
-              }
-            />
+            {step === 1 && (
+              <>
+                <UploadDropzone
+                  uploadedFile={uploadedFile}
+                  setUploadedFile={setUploadedFile}
+                />
 
-            {/* DUE DATE */}
+                <QuestionTypeList
+                  questionTypes={questionTypes}
+                  setQuestionTypes={setQuestionTypes}
+                />
 
-            <DueDateInput
-              value={dueDate}
-              onChange={
-                setDueDate
-              }
-            />
+                <AdditionalInfoBox
+                  value={instructions}
+                  onChange={setInstructions}
+                />
+              </>
+            )}
 
-            {/* QUESTIONS */}
+            {/* ================= STEP 2 ================= */}
 
-            <QuestionTypeList
-              questionTypes={
-                questionTypes
-              }
-              setQuestionTypes={
-                setQuestionTypes
-              }
-            />
+            {step === 2 && (
+              <div className="grid grid-cols-2 gap-[20px]">
+                <input
+                  type="text"
+                  placeholder="Assignment Title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="
+                    h-[60px]
 
-            {/* INFO */}
+                    rounded-[18px]
 
-            <AdditionalInfoBox
-              value={instructions}
-              onChange={
-                setInstructions
-              }
-            />
+                    border
+                    border-[#E5E5E5]
+
+                    px-[20px]
+
+                    text-[16px]
+                  "
+                />
+
+                <input
+                  type="text"
+                  placeholder="Subject"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                  className="
+                    h-[60px]
+
+                    rounded-[18px]
+
+                    border
+                    border-[#E5E5E5]
+
+                    px-[20px]
+
+                    text-[16px]
+                  "
+                />
+
+                <input
+                  type="text"
+                  placeholder="Class Name"
+                  value={className}
+                  onChange={(e) => setClassName(e.target.value)}
+                  className="
+                    h-[60px]
+
+                    rounded-[18px]
+
+                    border
+                    border-[#E5E5E5]
+
+                    px-[20px]
+
+                    text-[16px]
+                  "
+                />
+
+                <DueDateInput value={dueDate} onChange={setDueDate} />
+
+                <div
+                  className="
+                    col-span-2
+
+                    rounded-[24px]
+
+                    bg-[#F8F8F8]
+
+                    p-[24px]
+                  "
+                >
+                  <h3
+                    className="
+                      text-[18px]
+                      font-[700]
+                    "
+                  >
+                    School Information
+                  </h3>
+
+                  <div className="mt-[16px] flex items-center gap-[14px]">
+                    <div
+                      className="
+                        w-[56px]
+                        h-[56px]
+
+                        rounded-full
+
+                        bg-[#ECECEC]
+
+                        flex
+                        items-center
+                        justify-center
+
+                        text-[28px]
+                      "
+                    >
+                      🏫
+                    </div>
+
+                    <div>
+                      <p
+                        className="
+                          text-[17px]
+                          font-[700]
+                        "
+                      >
+                        {schoolName}
+                      </p>
+
+                      <p
+                        className="
+                          text-[14px]
+
+                          text-[#777777]
+                        "
+                      >
+                        Teacher: {teacherName}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
         {/* ACTIONS */}
 
         <UploadMaterialActions
-          onSubmit={
-            handleSubmit
-          }
+          step={step}
+          onPrevious={handlePrevious}
+          onNext={handleNext}
+          onSubmit={handleSubmit}
           loading={loading}
         />
       </div>
@@ -191,139 +393,126 @@ export default function UploadMaterialPage() {
           lg:hidden
 
           min-h-screen
-          w-full
 
           bg-[#F3F3F3]
-
-          overflow-x-hidden
 
           pb-[240px]
         "
       >
         <div
           className="
-            w-full
-
             px-[16px]
             pt-[20px]
           "
         >
-          {/* HEADER */}
-
           <UploadMaterialHeader mobile />
 
-          {/* STEPPER */}
-
-          <UploadMaterialStepper mobile />
-
-          {/* CARD */}
+          <UploadMaterialStepper mobile step={step} />
 
           <div
             className="
               mt-[24px]
 
-              w-full
-
               rounded-[32px]
 
-              bg-[#FFFFFF]
+              bg-white
 
               px-[20px]
               py-[24px]
             "
           >
             <div className="flex flex-col gap-[24px]">
-              {/* TITLE */}
+              {/* STEP 1 */}
 
-              <div>
-                <h2
-                  className="
-                    text-[24px]
-                    leading-[32px]
+              {step === 1 && (
+                <>
+                  <UploadDropzone
+                    mobile
+                    uploadedFile={uploadedFile}
+                    setUploadedFile={setUploadedFile}
+                  />
 
-                    font-[700]
+                  <QuestionTypeList
+                    mobile
+                    questionTypes={questionTypes}
+                    setQuestionTypes={setQuestionTypes}
+                  />
 
-                    tracking-[-0.03em]
+                  <AdditionalInfoBox
+                    mobile
+                    value={instructions}
+                    onChange={setInstructions}
+                  />
+                </>
+              )}
 
-                    text-[#1F1F1F]
-                  "
-                >
-                  Assignment Details
-                </h2>
+              {/* STEP 2 */}
 
-                <p
-                  className="
-                    mt-[8px]
+              {step === 2 && (
+                <>
+                  <input
+                    type="text"
+                    placeholder="Assignment Title"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className="
+                      h-[52px]
 
-                    text-[14px]
-                    leading-[22px]
+                      rounded-[16px]
 
-                    text-[#7B7B7B]
-                  "
-                >
-                  Basic information
-                  about your assignment
-                </p>
-              </div>
+                      border
 
-              {/* DROPZONE */}
+                      px-[16px]
+                    "
+                  />
 
-              <UploadDropzone
-                mobile
-                uploadedFile={
-                  uploadedFile
-                }
-                setUploadedFile={
-                  setUploadedFile
-                }
-              />
+                  <input
+                    type="text"
+                    placeholder="Subject"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
+                    className="
+                      h-[52px]
 
-              {/* DUE DATE */}
+                      rounded-[16px]
 
-              <DueDateInput
-                mobile
-                value={dueDate}
-                onChange={
-                  setDueDate
-                }
-              />
+                      border
 
-              {/* QUESTIONS */}
+                      px-[16px]
+                    "
+                  />
 
-              <QuestionTypeList
-                mobile
-                questionTypes={
-                  questionTypes
-                }
-                setQuestionTypes={
-                  setQuestionTypes
-                }
-              />
+                  <input
+                    type="text"
+                    placeholder="Class Name"
+                    value={className}
+                    onChange={(e) => setClassName(e.target.value)}
+                    className="
+                      h-[52px]
 
-              {/* INFO */}
+                      rounded-[16px]
 
-              <AdditionalInfoBox
-                mobile
-                value={instructions}
-                onChange={
-                  setInstructions
-                }
-              />
+                      border
+
+                      px-[16px]
+                    "
+                  />
+
+                  <DueDateInput mobile value={dueDate} onChange={setDueDate} />
+                </>
+              )}
             </div>
           </div>
         </div>
 
-        {/* ACTIONS */}
-
         <UploadMaterialActions
           mobile
-          onSubmit={
-            handleSubmit
-          }
+          step={step}
+          onPrevious={handlePrevious}
+          onNext={handleNext}
+          onSubmit={handleSubmit}
           loading={loading}
         />
-
-        {/* BOTTOM NAV */}
 
         <BottomNavbar />
       </div>

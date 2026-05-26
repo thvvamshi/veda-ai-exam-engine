@@ -1,94 +1,152 @@
-// src/components/ai-toolkit/AIToolkitBanner.tsx
+import { getGeneratedPaperPdfUrl } from "../../api/generatedPaper.api";
 
-export default function AIToolkitBanner() {
+type Props = {
+  mobile?: boolean;
+
+  generatedPaper: any;
+};
+
+export default function AIToolkitBanner({
+  mobile = false,
+
+  generatedPaper,
+}: Props) {
+  const handleDownloadPdf = () => {
+    console.log("GENERATED PAPER:", generatedPaper);
+
+    // BACKEND RETURNS "id"
+    const paperId = generatedPaper?.id;
+
+    if (!paperId) {
+      alert("Generated paper ID missing");
+
+      return;
+    }
+
+    const pdfUrl = getGeneratedPaperPdfUrl(paperId);
+
+    console.log("PDF URL:", pdfUrl);
+
+    window.open(pdfUrl, "_blank");
+  };
+
   return (
     <div
-      className="
+      className={`
         w-full
-        max-w-[1060px]
-
-        h-[164px]
 
         rounded-[32px]
 
         bg-[linear-gradient(90deg,#1D1D1D_0%,#111111_100%)]
-
-        px-[32px]
-        py-[24px]
 
         flex
         flex-col
         justify-between
 
         shadow-[0px_8px_40px_rgba(0,0,0,0.16)]
-      "
+
+        ${
+          mobile
+            ? `
+              min-h-[160px]
+
+              px-[18px]
+              py-[18px]
+            `
+            : `
+              min-h-[190px]
+
+              px-[32px]
+              py-[28px]
+            `
+        }
+      `}
     >
-      {/* TITLE */}
       <h2
-        className="
-          max-w-[930px]
-
-          text-[21px]
-          leading-[140%]
-
+        className={`
           font-[600]
 
           tracking-[-0.04em]
 
           text-white
-        "
+
+          ${
+            mobile
+              ? `
+                text-[18px]
+                leading-[30px]
+              `
+              : `
+                max-w-[930px]
+
+                text-[30px]
+                leading-[48px]
+              `
+          }
+        `}
       >
-        Certainly, Lakshya! Here are customized
-        Question Paper for your CBSE Grade 8
-        Science classes on the NCERT chapters:
+        Your AI-generated question paper for {generatedPaper?.subject} is ready.
       </h2>
 
-      {/* BUTTON */}
       <button
-        className="
-          w-fit
-          h-[56px]
-
+        onClick={handleDownloadPdf}
+        className={`
           rounded-full
 
           bg-white
 
-          px-[26px]
-
           flex
           items-center
           justify-center
-          gap-[12px]
-
-          shadow-[0px_6px_18px_rgba(0,0,0,0.08)]
 
           transition-all
           duration-200
 
           hover:scale-[1.02]
-        "
+
+          ${
+            mobile
+              ? `
+                mt-[18px]
+
+                w-[52px]
+                h-[52px]
+              `
+              : `
+                mt-[26px]
+
+                h-[58px]
+
+                px-[28px]
+
+                gap-[12px]
+
+                w-fit
+              `
+          }
+        `}
       >
         <span
-          className="
-            text-[22px]
-            text-[#1A1A1A]
-          "
+          className={`
+            ${mobile ? "text-[20px]" : "text-[24px]"}
+          `}
         >
-          ⤓
+          ⬇
         </span>
 
-        <span
-          className="
-            text-[18px]
-            font-[600]
+        {!mobile && (
+          <span
+            className="
+              text-[#1A1A1A]
 
-            tracking-[-0.03em]
+              text-[20px]
 
-            text-[#1A1A1A]
-          "
-        >
-          Download as PDF
-        </span>
+              font-[600]
+            "
+          >
+            Download as PDF
+          </span>
+        )}
       </button>
     </div>
   );

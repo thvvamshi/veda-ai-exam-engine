@@ -1,6 +1,8 @@
 import { create } from "zustand";
 
-interface Notification {
+import { persist } from "zustand/middleware";
+
+export interface Notification {
   id: string;
 
   title: string;
@@ -8,6 +10,8 @@ interface Notification {
   message: string;
 
   read: boolean;
+
+  createdAt: string;
 }
 
 interface NotificationStore {
@@ -17,38 +21,58 @@ interface NotificationStore {
     notification: Notification
   ) => void;
 
-  markAsRead: (id: string) => void;
+  markAsRead: (
+    id: string
+  ) => void;
 
   clearNotifications: () => void;
 }
 
 export const useNotificationStore =
-  create<NotificationStore>((set) => ({
-    notifications: [],
-
-    addNotification: (notification) =>
-      set((state) => ({
-        notifications: [
-          notification,
-          ...state.notifications,
-        ],
-      })),
-
-    markAsRead: (id) =>
-      set((state) => ({
-        notifications:
-          state.notifications.map((n) =>
-            n.id === id
-              ? {
-                  ...n,
-                  read: true,
-                }
-              : n
-          ),
-      })),
-
-    clearNotifications: () =>
-      set({
+  create<NotificationStore>()(
+    persist(
+      (set) => ({
         notifications: [],
+
+        addNotification:
+          (
+            notification
+          ) =>
+            set((state) => ({
+              notifications: [
+                notification,
+                ...state.notifications,
+              ],
+            })),
+
+        markAsRead:
+          (id) =>
+            set((state) => ({
+              notifications:
+                state.notifications.map(
+                  (
+                    notification
+                  ) =>
+                    notification.id ===
+                    id
+                      ? {
+                          ...notification,
+                          read: true,
+                        }
+                      : notification
+                ),
+            })),
+
+        clearNotifications:
+          () =>
+            set({
+              notifications: [],
+            }),
       }),
-  }));
+
+      {
+        name:
+          "veda-notifications",
+      }
+    )
+  );

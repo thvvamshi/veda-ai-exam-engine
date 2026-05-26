@@ -9,13 +9,16 @@ export const generateQuestionPaperPDF = (
 
   res: Response,
 ) => {
-  // create a new PDF document
+  // ================= PDF =================
+
   const doc = new PDFDocument({
     margin: 50,
 
     size: "A4",
   });
-  // set response headers for PDF download
+
+  // ================= RESPONSE =================
+
   res.setHeader("Content-Type", "application/pdf");
 
   res.setHeader(
@@ -25,129 +28,194 @@ export const generateQuestionPaperPDF = (
   );
 
   doc.pipe(res);
-  // header section
+
+  // ================= TOTAL MARKS =================
+
+  const totalMarks =
+    generatedPaper.sections?.reduce(
+      (total: number, section: any) =>
+        total +
+        section.questions.reduce(
+          (sum: number, question: any) => sum + (question.marks || 0),
+          0,
+        ),
+      0,
+    ) || 0;
+
+  // ================= HEADER =================
+
   doc
-    .fontSize(20)
     .font("Helvetica-Bold")
-    .text(
-      assignment.schoolName || "VedaAI School",
-
-      {
-        align: "center",
-      },
-    );
-
-  doc.moveDown(0.5);
-
-  doc
-    .fontSize(16)
-    .font("Helvetica")
-    .text(
-      assignment.title || "Question Paper",
-
-      {
-        align: "center",
-      },
-    );
-
-  doc.moveDown(0.5);
-
-  doc.fontSize(11).text(`Subject: ${assignment.subject || "N/A"}`, {
-    align: "left",
-  });
-
-  doc.text(`Class: ${assignment.className || "N/A"}`);
-
-  doc.text(`Due Date: ${assignment.dueDate || "N/A"}`);
-
-  doc.moveDown();
-  // Student Information Section
-  doc.font("Helvetica-Bold").fontSize(12).text("Student Information");
-
-  doc.moveDown(0.5);
-
-  doc.font("Helvetica").text("Name: ________________________________");
-
-  doc.moveDown(0.5);
-
-  doc.text("Roll Number: _________________________");
-
-  doc.moveDown(0.5);
-
-  doc.text("Section: ______________________________");
-
-  doc.moveDown(1.5);
-  // Instructions
-  if (assignment.instructions) {
-    doc.font("Helvetica-Bold").text("Instructions");
-
-    doc.moveDown(0.5);
-
-    doc.font("Helvetica").text(assignment.instructions);
-
-    doc.moveDown();
-  }
-  // Sections and Questions
-  generatedPaper.sections.forEach((section: any, sectionIndex: number) => {
-    // section header with underline
-    doc.fontSize(15).font("Helvetica-Bold").text(section.title, {
-      underline: true,
+    .fontSize(28)
+    .text(assignment.schoolName || "Delhi Public School", {
+      align: "center",
     });
 
-    doc.moveDown(0.5);
-    // Section instructions
+  doc.moveDown(0.8);
+
+  doc
+    .font("Helvetica-Bold")
+    .fontSize(18)
+    .text(`Subject: ${assignment.subject || ""}`, {
+      align: "center",
+    });
+
+  doc.moveDown(0.3);
+
+  doc
+    .font("Helvetica-Bold")
+    .fontSize(18)
+    .text(`Class: ${assignment.className || ""}`, {
+      align: "center",
+    });
+
+  doc.moveDown(1.5);
+
+  // ================= DETAILS =================
+
+  doc.font("Helvetica-Bold").fontSize(12).text("Time Allowed: 45 minutes", {
+    continued: true,
+  });
+
+  doc.text(`Maximum Marks: ${totalMarks}`, {
+    align: "right",
+  });
+
+  doc.moveDown(1.5);
+
+  // ================= INSTRUCTIONS =================
+
+  doc
+    .font("Helvetica")
+    .fontSize(12)
+    .text("All questions are compulsory unless stated otherwise.");
+
+  doc.moveDown(1.5);
+
+  // ================= STUDENT DETAILS =================
+
+  doc.text("Name: __________________");
+
+  doc.moveDown(0.5);
+
+  doc.text("Roll Number: __________________");
+
+  doc.moveDown(0.5);
+
+  doc.text(`Class: ${assignment.className || ""}  Section: __________________`);
+
+  doc.moveDown(2);
+
+  // ================= SECTIONS =================
+
+  generatedPaper.sections?.forEach((section: any, sectionIndex: number) => {
+    // SECTION LETTER
+
     doc
+      .font("Helvetica-Bold")
+      .fontSize(22)
+      .text(`Section ${String.fromCharCode(65 + sectionIndex)}`, {
+        align: "center",
+      });
+
+    doc.moveDown(1);
+
+    // SECTION TITLE
+
+    doc.font("Helvetica-Bold").fontSize(16).text(section.title);
+
+    doc.moveDown(0.4);
+
+    // SECTION INSTRUCTION
+
+    doc
+      .font("Helvetica-Oblique")
       .fontSize(11)
-      .font("Helvetica")
+      .fillColor("#666666")
       .text(section.instruction || "Attempt all questions.");
 
-    doc.moveDown();
-    // Questions
-    section.questions.forEach((question: any, questionIndex: number) => {
-      // Question text
-      doc
-        .fontSize(12)
-        .font("Helvetica-Bold")
-        .text(`${questionIndex + 1}. ${question.questionText}`);
+    doc.fillColor("#000000");
 
-      doc.moveDown(0.3);
-      // Options for MCQs
-      if (question.type === "mcq" && question.options?.length) {
+    doc.moveDown(1);
+
+    // ================= QUESTIONS =================
+
+    section.questions?.forEach((question: any, qIndex: number) => {
+      const questionText = question.questionText || question.text;
+
+      // QUESTION
+
+      doc
+        .font("Helvetica")
+        .fontSize(12)
+        .text(
+          `${qIndex + 1}. [${question.difficulty}] ${questionText} [${
+            question.marks
+          } Marks]`,
+          {
+            lineGap: 5,
+          },
+        );
+
+      // ================= MCQ OPTIONS =================
+
+      if (question.type === "mcq" && question.options?.length > 0) {
+        doc.moveDown(0.5);
+
         question.options.forEach((option: string, optionIndex: number) => {
           doc
-            .fontSize(11)
             .font("Helvetica")
+            .fontSize(11)
             .text(`${String.fromCharCode(65 + optionIndex)}. ${option}`, {
               indent: 20,
             });
+
+          doc.moveDown(0.2);
         });
-
-        doc.moveDown(0.5);
       }
-      // Difficulty badge
-      const difficulty = (question.difficulty || "medium").toUpperCase();
 
-      doc.fontSize(10).font("Helvetica-Oblique").text(`[ ${difficulty} ]`);
-      // Marks
-      doc.fontSize(10).font("Helvetica").text(`Marks: ${question.marks}`);
-      // divider line
-      doc.moveTo(50, doc.y).lineTo(550, doc.y).strokeColor("#cccccc").stroke();
-
-      doc.moveDown();
+      doc.moveDown(1);
     });
 
     doc.moveDown(1.5);
   });
-  // // Footer
-  doc.moveDown();
 
-  doc.fontSize(10).fillColor("gray").text(
-    "Generated by VedaAI",
+  // ================= END =================
 
-    {
+  doc.font("Helvetica-Bold").fontSize(18).text("End of Question Paper");
+
+  doc.moveDown(2);
+
+  // ================= ANSWER KEY =================
+
+  doc.font("Helvetica-Bold").fontSize(22).text("Answer Key:");
+
+  doc.moveDown(1);
+
+  generatedPaper.answerKey?.forEach((answer: any, index: number) => {
+    doc
+      .font("Helvetica")
+      .fontSize(12)
+      .text(`${index + 1}. ${answer.answer}`, {
+        lineGap: 5,
+      });
+
+    doc.moveDown(0.8);
+  });
+
+  // ================= FOOTER =================
+
+  doc.moveDown(2);
+
+  doc
+    .font("Helvetica-Oblique")
+    .fontSize(10)
+    .fillColor("gray")
+    .text("Generated by VedaAI", {
       align: "center",
-    },
-  );
-  // finalize PDF and end the stream
+    });
+
+  // ================= END =================
+
   doc.end();
 };

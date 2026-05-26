@@ -1,16 +1,15 @@
 import { create } from "zustand";
 
-import {
-  Assignment,
-  GeneratedPaper,
-} from "../types/assignment.types";
+import { Assignment } from "../types/assignment.types";
 
 interface AssignmentStore {
   assignments: Assignment[];
 
-  loading: boolean;
+  selectedAssignment:
+    | Assignment
+    | null;
 
-  selectedAssignment: Assignment | null;
+  loading: boolean;
 
   error: string | null;
 
@@ -26,9 +25,13 @@ interface AssignmentStore {
     assignment: Assignment
   ) => void;
 
+  setSelectedAssignment: (
+    assignment: Assignment | null
+  ) => void;
+
   setGeneratedPaper: (
     assignmentId: string,
-    generatedPaper: GeneratedPaper
+    generatedPaper: any
   ) => void;
 
   setLoading: (
@@ -38,10 +41,6 @@ interface AssignmentStore {
   setError: (
     value: string | null
   ) => void;
-
-  setSelectedAssignment: (
-    assignment: Assignment | null
-  ) => void;
 }
 
 export const useAssignmentStore =
@@ -49,10 +48,10 @@ export const useAssignmentStore =
     (set) => ({
       assignments: [],
 
-      loading: false,
-
       selectedAssignment:
         null,
+
+      loading: false,
 
       error: null,
 
@@ -80,12 +79,29 @@ export const useAssignmentStore =
           assignments:
             state.assignments.map(
               (item) =>
-                item._id ===
-                assignment._id
+                item.id ===
+                assignment.id
                   ? assignment
                   : item
             ),
+
+          selectedAssignment:
+            state.selectedAssignment
+              ? state
+                  .selectedAssignment
+                  .id ===
+                assignment.id
+                ? assignment
+                : state.selectedAssignment
+              : null,
         })),
+
+      setSelectedAssignment:
+        (assignment) =>
+          set({
+            selectedAssignment:
+              assignment,
+          }),
 
       setGeneratedPaper: (
         assignmentId,
@@ -95,11 +111,13 @@ export const useAssignmentStore =
           assignments:
             state.assignments.map(
               (assignment) =>
-                assignment._id ===
+                assignment.id ===
                 assignmentId
                   ? {
                       ...assignment,
+
                       generatedPaper,
+
                       status:
                         "completed",
                     }
@@ -114,18 +132,9 @@ export const useAssignmentStore =
           loading: value,
         }),
 
-      setError: (
-        value
-      ) =>
+      setError: (value) =>
         set({
           error: value,
         }),
-
-      setSelectedAssignment:
-        (assignment) =>
-          set({
-            selectedAssignment:
-              assignment,
-          }),
     })
   );

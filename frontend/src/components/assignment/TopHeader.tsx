@@ -1,4 +1,18 @@
+import NotificationBell from "../notification/NotificationBell";
+
+import { useUserStore } from "../../store/user.store";
+
 export default function TopHeader() {
+  const teacherName = useUserStore((state) => state.teacherName);
+
+  const initials =
+    teacherName
+      ?.split(" ")
+      ?.map((word) => word[0])
+      ?.join("")
+      ?.slice(0, 2)
+      ?.toUpperCase() || "JD";
+
   return (
     <div
       className="
@@ -13,7 +27,7 @@ export default function TopHeader() {
 
         flex
         items-center
-        justify-between
+        justify-between 
       "
     >
       {/* LEFT */}
@@ -22,6 +36,11 @@ export default function TopHeader() {
           className="
             text-[28px]
             text-[#2D2D2D]
+
+            transition-all
+            duration-200
+
+            hover:opacity-70
           "
         >
           ←
@@ -42,47 +61,7 @@ export default function TopHeader() {
       {/* RIGHT */}
       <div className="flex items-center gap-[18px]">
         {/* NOTIFICATION */}
-        <div
-          className="
-            relative
-
-            w-[28px]
-            h-[28px]
-
-            flex
-            items-center
-            justify-center
-          "
-        >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="text-[#2D2D2D]"
-          >
-            <path
-              d="M12 22C13.1 22 14 21.1 14 20H10C10 21.1 10.9 22 12 22ZM18 16V11C18 7.93 16.36 5.36 13.5 4.68V4C13.5 3.17 12.83 2.5 12 2.5C11.17 2.5 10.5 3.17 10.5 4V4.68C7.63 5.36 6 7.92 6 11V16L4 18V19H20V18L18 16Z"
-              fill="currentColor"
-            />
-          </svg>
-
-          <div
-            className="
-              absolute
-              top-[1px]
-              right-[1px]
-
-              w-[8px]
-              h-[8px]
-
-              rounded-full
-
-              bg-[#FF5B1F]
-            "
-          />
-        </div>
+        <NotificationBell />
 
         {/* PROFILE */}
         <div
@@ -102,6 +81,7 @@ export default function TopHeader() {
             shadow-[0px_2px_10px_rgba(0,0,0,0.05)]
           "
         >
+          {/* AVATAR */}
           <div
             className="
               w-[38px]
@@ -109,18 +89,25 @@ export default function TopHeader() {
 
               rounded-full
 
-              bg-[#E4C3AA]
+              bg-[linear-gradient(135deg,#F7B34D_0%,#E35B47_100%)]
 
               flex
               items-center
               justify-center
 
-              text-[18px]
+              text-white
+              text-[14px]
+              font-[800]
+
+              uppercase
+
+              shrink-0
             "
           >
-            👤
+            {initials}
           </div>
 
+          {/* NAME */}
           <span
             className="
               text-[16px]
@@ -129,7 +116,7 @@ export default function TopHeader() {
               text-[#1A1A1A]
             "
           >
-            John Doe
+            {teacherName}
           </span>
         </div>
       </div>

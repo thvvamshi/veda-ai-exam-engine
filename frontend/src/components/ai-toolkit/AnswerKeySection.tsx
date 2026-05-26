@@ -11,33 +11,26 @@ export default function AnswerKeySection({
   return (
     <div
       className={`
-        mt-[20px]
-
-        flex
-        flex-col
-
         ${
           mobile
-            ? "gap-[12px]"
-            : "gap-[18px]"
+            ? "mt-[50px]"
+            : "mt-[80px]"
         }
       `}
     >
       <h2
         className={`
-          font-[700]
+          font-[800]
 
           text-[#1F1F1F]
 
           ${
             mobile
               ? `
-                text-[18px]
-                leading-[28px]
+                text-[24px]
               `
               : `
-                text-[32px]
-                leading-[42px]
+                text-[42px]
               `
           }
         `}
@@ -54,12 +47,16 @@ export default function AnswerKeySection({
               ? `
                 pl-[22px]
 
-                space-y-[12px]
-              `
-              : `
-                pl-[28px]
+                mt-[22px]
 
                 space-y-[18px]
+              `
+              : `
+                pl-[34px]
+
+                mt-[36px]
+
+                space-y-[28px]
               `
           }
         `}
@@ -77,12 +74,12 @@ export default function AnswerKeySection({
                 ${
                   mobile
                     ? `
-                      text-[14px]
-                      leading-[28px]
+                      text-[16px]
+                      leading-[34px]
                     `
                     : `
-                      text-[18px]
-                      leading-[36px]
+                      text-[24px]
+                      leading-[48px]
                     `
                 }
               `}

@@ -7,11 +7,14 @@ export interface QuestionType {
 }
 
 export interface GeneratedQuestion {
-  _id: string;
+  id?: string;
 
   text: string;
 
-  difficulty: "easy" | "moderate" | "hard";
+  difficulty:
+    | "easy"
+    | "moderate"
+    | "hard";
 
   marks: number;
 }
@@ -25,12 +28,14 @@ export interface GeneratedSection {
 }
 
 export interface AnswerKey {
-  questionId: string;
+  questionId?: string;
 
   answer: string;
 }
 
 export interface GeneratedPaper {
+  id?: string;
+
   schoolName: string;
 
   subject: string;
@@ -41,7 +46,7 @@ export interface GeneratedPaper {
 
   maxMarks: number;
 
-  generatedMessage: string;
+  generatedMessage?: string;
 
   sections: GeneratedSection[];
 
@@ -49,19 +54,36 @@ export interface GeneratedPaper {
 }
 
 export interface Assignment {
-  _id: string;
+  id: string;
 
   title: string;
+
+  schoolName?: string;
+
+  subject?: string;
+
+  className?: string;
 
   dueDate: string;
 
   instructions?: string;
 
+  additionalInstructions?: string;
+
+  uploadedFileUrl?: string;
+
   questionTypes: QuestionType[];
 
   generatedPaper?: GeneratedPaper;
 
-  status: "pending" | "processing" | "completed" | "failed";
+  status:
+    | "pending"
+    | "processing"
+    | "completed"
+    | "failed"
+    | "draft";
 
   createdAt: string;
+
+  updatedAt?: string;
 }

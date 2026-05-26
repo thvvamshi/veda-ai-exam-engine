@@ -17,7 +17,7 @@ import { useAssignmentPolling } from "./hooks/useAssignmentPolling";
 export default function App() {
   useSocketEvents();
 
-  useAssignmentPolling();
+  // useAssignmentPolling();
 
   return (
     <Suspense

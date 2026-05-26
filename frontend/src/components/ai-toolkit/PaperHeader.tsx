@@ -6,6 +6,10 @@ type Props = {
   subject: string;
 
   className: string;
+
+  timeAllowed?: number;
+
+  maxMarks?: number;
 };
 
 export default function PaperHeader({
@@ -13,88 +17,104 @@ export default function PaperHeader({
   schoolName,
   subject,
   className,
+  timeAllowed,
+  maxMarks,
 }: Props) {
   return (
-    <div className="text-center">
-      <h1
-        className={`
-          font-[700]
-          tracking-[-0.04em]
+    <div>
+      <div className="text-center">
+        <h1
+          className={`
+            font-[800]
 
-          text-[#1F1F1F]
+            tracking-[-0.04em]
 
-          ${
-            mobile
-              ? `
-                text-[18px]
-                leading-[26px]
-              `
-              : `
-                text-[32px]
-                leading-[42px]
-              `
-          }
-        `}
-      >
-        {schoolName}
-      </h1>
+            text-[#1F1F1F]
+
+            ${
+              mobile
+                ? `
+                  text-[26px]
+                  leading-[38px]
+                `
+                : `
+                  text-[52px]
+                  leading-[66px]
+                `
+            }
+          `}
+        >
+          {schoolName}
+        </h1>
+
+        <div className="mt-[20px]">
+          <p
+            className={`
+              font-[700]
+
+              ${
+                mobile
+                  ? "text-[18px]"
+                  : "text-[32px]"
+              }
+            `}
+          >
+            Subject: {subject}
+          </p>
+
+          <p
+            className={`
+              mt-[6px]
+
+              font-[700]
+
+              ${
+                mobile
+                  ? "text-[18px]"
+                  : "text-[32px]"
+              }
+            `}
+          >
+            Class: {className}
+          </p>
+        </div>
+      </div>
 
       <div
-        className={`
-          mt-[10px]
+        className="
+          mt-[40px]
 
           flex
-          flex-col
-
-          ${
-            mobile
-              ? "gap-[2px]"
-              : "gap-[4px]"
-          }
-        `}
+          items-center
+          justify-between
+        "
       >
         <p
           className={`
             font-[600]
 
-            text-[#2B2B2B]
-
             ${
               mobile
-                ? `
-                  text-[14px]
-                  leading-[22px]
-                `
-                : `
-                  text-[20px]
-                  leading-[28px]
-                `
+                ? "text-[14px]"
+                : "text-[24px]"
             }
           `}
         >
-          Subject: {subject}
+          Time Allowed: {timeAllowed} minutes
         </p>
 
         <p
           className={`
             font-[600]
 
-            text-[#2B2B2B]
-
             ${
               mobile
-                ? `
-                  text-[14px]
-                  leading-[22px]
-                `
-                : `
-                  text-[20px]
-                  leading-[28px]
-                `
+                ? "text-[14px]"
+                : "text-[24px]"
             }
           `}
         >
-          Class: {className}
+          Maximum Marks: {maxMarks}
         </p>
       </div>
     </div>

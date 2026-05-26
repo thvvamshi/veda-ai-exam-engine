@@ -22,15 +22,19 @@ import uploadRoutes from "./routes/upload.routes";
 
 import pdfRoutes from "./routes/pdf.routes";
 
+
 const app = express();
 
+// CORS
 app.use(
   cors({
-    origin: "*",
+    origin: "http://localhost:5173",
+
     credentials: true,
   }),
 );
 
+// BODY PARSER
 app.use(
   express.json({
     limit: "10mb",
@@ -44,17 +48,20 @@ app.use(
   }),
 );
 
+// COMPRESSION
 app.use(compression());
 
+// SECURITY
 app.use(
   helmet({
     crossOriginResourcePolicy: false,
   }),
 );
 
+// LOGGER
 app.use(morgan("dev"));
 
-// Routes
+// ROUTES
 app.use("/api/v1/health", healthRoutes);
 
 app.use("/api/v1/assignments", assignmentRoutes);
@@ -67,8 +74,7 @@ app.use("/api/v1/uploads", uploadRoutes);
 
 app.use("/api/v1/generated-papers", pdfRoutes);
 
-
-// Default Route
+// ROOT
 app.get("/", (_req, res) => {
   res.json({
     success: true,
@@ -76,7 +82,7 @@ app.get("/", (_req, res) => {
   });
 });
 
-// 404 Route Handler
+// 404
 app.use((_req, res) => {
   return res.status(404).json({
     success: false,
@@ -84,7 +90,7 @@ app.use((_req, res) => {
   });
 });
 
-// Global Error Handler
+// ERROR
 app.use(errorMiddleware);
 
 export default app;

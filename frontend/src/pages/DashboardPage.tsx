@@ -1,4 +1,5 @@
 import {
+  useMemo,
   useState,
 } from "react";
 
@@ -12,21 +13,68 @@ import TopHeader from "../components/assignment/TopHeader";
 
 import BottomNavbar from "../components/mobile/BottomNavbar";
 
-const mockAssignments = [];
+import Loader from "../components/common/Loader";
+
+import ErrorState from "../components/common/ErrorState";
+
+import { useAssignments } from "../hooks/useAssignments";
+
+import { useAssignmentStore } from "../store/assignment.store";
 
 export default function DashboardPage() {
+  // FETCH ASSIGNMENTS
+  useAssignments();
+
   const [search, setSearch] =
     useState("");
 
-  const filteredAssignments =
-    mockAssignments.filter(
-      (assignment: any) =>
-        assignment?.title
-          ?.toLowerCase()
-          .includes(
-            search.toLowerCase()
-          )
+  // STORE
+  const assignments =
+    useAssignmentStore(
+      (state) =>
+        state.assignments
     );
+
+  const loading =
+    useAssignmentStore(
+      (state) =>
+        state.loading
+    );
+
+  const error =
+    useAssignmentStore(
+      (state) =>
+        state.error
+    );
+
+  // FILTER
+  const filteredAssignments =
+    useMemo(() => {
+      return assignments.filter(
+        (assignment) =>
+          assignment.title
+            ?.toLowerCase()
+            .includes(
+              search.toLowerCase()
+            )
+      );
+    }, [assignments, search]);
+
+  // LOADING
+  if (loading) {
+    return <Loader />;
+  }
+
+  // ERROR
+  if (error) {
+    return (
+      <div className="p-[24px]">
+        <ErrorState
+          message={error}
+        />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -45,11 +93,14 @@ export default function DashboardPage() {
       >
         <TopHeader />
 
+        {/* TITLE */}
         <div>
           <h1
             className="
               text-[28px]
               font-[800]
+
+              tracking-[-0.04em]
 
               text-[#1F1F1F]
             "
@@ -69,11 +120,13 @@ export default function DashboardPage() {
           </p>
         </div>
 
+        {/* SEARCH */}
         <SearchBar
           value={search}
           onChange={setSearch}
         />
 
+        {/* CONTENT */}
         {filteredAssignments.length ===
         0 ? (
           <EmptyAssignmentState />
@@ -95,10 +148,14 @@ export default function DashboardPage() {
           pb-[120px]
         "
       >
-        <SearchBar
-          value={search}
-          onChange={setSearch}
-        />
+        <TopHeader />
+
+        <div className="mt-[18px]">
+          <SearchBar
+            value={search}
+            onChange={setSearch}
+          />
+        </div>
 
         <div className="mt-[20px]">
           {filteredAssignments.length ===

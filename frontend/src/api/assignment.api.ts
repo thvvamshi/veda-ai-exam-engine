@@ -1,9 +1,11 @@
-import api from "./axios";
+import { api } from "./axios";
 
 export const createAssignmentAPI =
-  async (formData: FormData) => {
-    try {
-      const response = await api.post(
+  async (
+    formData: FormData
+  ) => {
+    const response =
+      await api.post(
         "/assignments",
         formData,
         {
@@ -14,43 +16,37 @@ export const createAssignmentAPI =
         }
       );
 
-      return response.data;
-    } catch (error: any) {
-      throw new Error(
-        error.response?.data?.message ||
-          "Failed to create assignment"
-      );
-    }
+    return response.data;
   };
 
 export const getAssignmentsAPI =
   async () => {
-    try {
-      const response = await api.get(
+    const response =
+      await api.get(
         "/assignments"
       );
 
-      return response.data;
-    } catch (error: any) {
-      throw new Error(
-        error.response?.data?.message ||
-          "Failed to fetch assignments"
-      );
-    }
+    return response.data;
   };
 
 export const getAssignmentByIdAPI =
   async (id: string) => {
-    try {
-      const response = await api.get(
+    const response =
+      await api.get(
         `/assignments/${id}`
       );
 
-      return response.data;
-    } catch (error: any) {
-      throw new Error(
-        error.response?.data?.message ||
-          "Failed to fetch assignment"
+    return response.data;
+  };
+
+export const generateAssignmentAPI =
+  async (
+    assignmentId: string
+  ) => {
+    const response =
+      await api.post(
+        `/assignments/${assignmentId}/generate`
       );
-    }
+
+    return response.data;
   };

@@ -50,9 +50,12 @@ export const useSocketEvents =
                   "Assignment Ready",
 
                 message:
-                  "Question paper generated successfully",
+                  "AI question paper generated successfully",
 
                 read: false,
+
+                createdAt:
+                  new Date().toISOString(),
               });
             }
           } catch (error) {
@@ -71,9 +74,12 @@ export const useSocketEvents =
               "Generation Failed",
 
             message:
-              "Failed to generate paper",
+              "AI failed to generate the question paper",
 
             read: false,
+
+            createdAt:
+              new Date().toISOString(),
           });
         };
 
