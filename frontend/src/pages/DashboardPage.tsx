@@ -1,7 +1,4 @@
-import {
-  useMemo,
-  useState,
-} from "react";
+import { useMemo, useState } from "react";
 
 import AssignmentGrid from "../components/assignment/AssignmentGrid";
 
@@ -21,57 +18,69 @@ import { useAssignments } from "../hooks/useAssignments";
 
 import { useAssignmentStore } from "../store/assignment.store";
 
+import { deleteAssignmentAPI } from "../api/assignment.api";
+
 export default function DashboardPage() {
   // FETCH ASSIGNMENTS
+
   useAssignments();
 
-  const [search, setSearch] =
-    useState("");
+  const [search, setSearch] = useState("");
 
   // STORE
-  const assignments =
-    useAssignmentStore(
-      (state) =>
-        state.assignments
-    );
 
-  const loading =
-    useAssignmentStore(
-      (state) =>
-        state.loading
-    );
+  const assignments = useAssignmentStore((state) => state.assignments);
 
-  const error =
-    useAssignmentStore(
-      (state) =>
-        state.error
-    );
+  const loading = useAssignmentStore((state) => state.loading);
 
-  // FILTER
-  const filteredAssignments =
-    useMemo(() => {
-      return assignments.filter(
-        (assignment) =>
-          assignment.title
-            ?.toLowerCase()
-            .includes(
-              search.toLowerCase()
-            )
+  const error = useAssignmentStore((state) => state.error);
+
+  const setAssignments = useAssignmentStore((state) => state.setAssignments);
+
+  // ================= DELETE =================
+
+  const handleDeleteAssignment = async (id: string) => {
+    try {
+      console.log("DELETE CLICKED:", id);
+
+      // DELETE FROM BACKEND
+
+      await deleteAssignmentAPI(id);
+
+      // REMOVE FROM UI
+
+      const updatedAssignments = assignments.filter(
+        (assignment) => assignment.id !== id,
       );
-    }, [assignments, search]);
 
-  // LOADING
+      setAssignments(updatedAssignments);
+
+      console.log("DELETE SUCCESS");
+    } catch (error) {
+      console.error("DELETE FAILED:", error);
+    }
+  };
+
+  // ================= FILTER =================
+
+  const filteredAssignments = useMemo(() => {
+    return assignments.filter((assignment) =>
+      assignment.title?.toLowerCase().includes(search.toLowerCase()),
+    );
+  }, [assignments, search]);
+
+  // ================= LOADING =================
+
   if (loading) {
     return <Loader />;
   }
 
-  // ERROR
+  // ================= ERROR =================
+
   if (error) {
     return (
       <div className="p-[24px]">
-        <ErrorState
-          message={error}
-        />
+        <ErrorState message={error} />
       </div>
     );
   }
@@ -79,6 +88,7 @@ export default function DashboardPage() {
   return (
     <>
       {/* DESKTOP */}
+
       <div
         className="
           hidden
@@ -94,6 +104,7 @@ export default function DashboardPage() {
         <TopHeader />
 
         {/* TITLE */}
+
         <div>
           <h1
             className="
@@ -115,31 +126,28 @@ export default function DashboardPage() {
               text-[#707070]
             "
           >
-            Manage and create
-            assignments
+            Manage and create assignments
           </p>
         </div>
 
         {/* SEARCH */}
-        <SearchBar
-          value={search}
-          onChange={setSearch}
-        />
+
+        <SearchBar value={search} onChange={setSearch} />
 
         {/* CONTENT */}
-        {filteredAssignments.length ===
-        0 ? (
+
+        {filteredAssignments.length === 0 ? (
           <EmptyAssignmentState />
         ) : (
           <AssignmentGrid
-            assignments={
-              filteredAssignments
-            }
+            assignments={filteredAssignments}
+            onDelete={handleDeleteAssignment}
           />
         )}
       </div>
 
       {/* MOBILE */}
+
       <div
         className="
           lg:hidden
@@ -151,23 +159,16 @@ export default function DashboardPage() {
         <TopHeader />
 
         <div className="mt-[18px]">
-          <SearchBar
-            value={search}
-            onChange={setSearch}
-          />
+          <SearchBar value={search} onChange={setSearch} />
         </div>
 
         <div className="mt-[20px]">
-          {filteredAssignments.length ===
-          0 ? (
-            <EmptyAssignmentState
-              mobile
-            />
+          {filteredAssignments.length === 0 ? (
+            <EmptyAssignmentState mobile />
           ) : (
             <AssignmentGrid
-              assignments={
-                filteredAssignments
-              }
+              assignments={filteredAssignments}
+              onDelete={handleDeleteAssignment}
             />
           )}
         </div>

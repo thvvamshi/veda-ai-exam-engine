@@ -4,6 +4,7 @@ import {
   createAssignment,
   getAssignments,
   getAssignmentById,
+  deleteAssignment,
 } from "../controllers/assignment.controller";
 
 import { asyncHandler } from "../utils/asyncHandler";
@@ -12,13 +13,20 @@ import { upload } from "../middleware/upload.middleware";
 
 const router = Router();
 
-// CREATE ASSIGNMENT
-router.post("/",upload.single("file"),asyncHandler(createAssignment),);
+// CREATE
 
-// GET ALL ASSIGNMENTS
+router.post("/", upload.single("file"), asyncHandler(createAssignment));
+
+// GET ALL
+
 router.get("/", asyncHandler(getAssignments));
 
-// GET ASSIGNMENTS BY ID
+// GET BY ID
+
 router.get("/:assignmentId", asyncHandler(getAssignmentById));
+
+// DELETE
+
+router.delete("/:assignmentId", asyncHandler(deleteAssignment));
 
 export default router;

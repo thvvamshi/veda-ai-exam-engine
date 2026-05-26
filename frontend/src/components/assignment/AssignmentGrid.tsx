@@ -6,11 +6,19 @@ import { Assignment } from "../../types/assignment.types";
 
 type Props = {
   assignments: Assignment[];
+
+  onDelete?: (
+    id: string,
+  ) => void;
 };
 
 export default function AssignmentGrid({
   assignments,
+
+  onDelete,
 }: Props) {
+  // EMPTY STATE
+
   if (
     !assignments ||
     assignments.length === 0
@@ -40,8 +48,11 @@ export default function AssignmentGrid({
             assignment={
               assignment
             }
+            onDelete={
+              onDelete
+            }
           />
-        )
+        ),
       )}
     </div>
   );
