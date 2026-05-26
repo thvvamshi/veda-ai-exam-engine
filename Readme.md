@@ -2,13 +2,13 @@
 
 <div align="center">
 
-![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge\&logo=react)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge\&logo=typescript)
-![Vite](https://img.shields.io/badge/Vite-Frontend-purple?style=for-the-badge\&logo=vite)
-![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v4-38B2AC?style=for-the-badge\&logo=tailwind-css)
-![Node.js](https://img.shields.io/badge/Node.js-Backend-green?style=for-the-badge\&logo=node.js)
-![MongoDB](https://img.shields.io/badge/MongoDB-Database-green?style=for-the-badge\&logo=mongodb)
-![Socket.io](https://img.shields.io/badge/Socket.io-Realtime-black?style=for-the-badge\&logo=socket.io)
+![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-Frontend-purple?style=for-the-badge&logo=vite)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css)
+![Node.js](https://img.shields.io/badge/Node.js-Backend-green?style=for-the-badge&logo=node.js)
+![MongoDB](https://img.shields.io/badge/MongoDB-Database-green?style=for-the-badge&logo=mongodb)
+![Socket.io](https://img.shields.io/badge/Socket.io-Realtime-black?style=for-the-badge&logo=socket.io)
 
 ### AI-Powered Assignment & Material Management Platform
 
@@ -18,29 +18,39 @@ A production-grade full-stack educational platform built with modern technologie
 
 ---
 
+## 🌐 Live Demo
+
+### Frontend Deployment
+
+https://veda-ai-exam-enginee.onrender.com
+
+### Backend API
+
+https://veda-ai-exam-engine.onrender.com
+
 # 📌 Table of Contents
 
-* [Overview](#-overview)
-* [Features](#-features)
-* [Tech Stack](#-tech-stack)
-* [Architecture](#-architecture)
-* [System Design](#-system-design)
-* [Project Structure](#-project-structure)
-* [Installation](#-installation)
-* [Environment Variables](#-environment-variables)
-* [API Documentation](#-api-documentation)
-* [Authentication Flow](#-authentication-flow)
-* [Database Design](#-database-design)
-* [Frontend Design System](#-frontend-design-system)
-* [State Management](#-state-management)
-* [Socket Events](#-socket-events)
-* [Validation & Error Handling](#-validation--error-handling)
-* [Performance Optimizations](#-performance-optimizations)
-* [Security](#-security)
-* [Deployment](#-deployment)
-* [Testing](#-testing)
-* [Future Improvements](#-future-improvements)
-* [Author](#-author)
+- [Overview](#-overview)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Architecture](#-architecture)
+- [System Design](#-system-design)
+- [Project Structure](#-project-structure)
+- [Installation](#-installation)
+- [Environment Variables](#-environment-variables)
+- [API Documentation](#-api-documentation)
+- [Authentication Flow](#-authentication-flow)
+- [Database Design](#-database-design)
+- [Frontend Design System](#-frontend-design-system)
+- [State Management](#-state-management)
+- [Socket Events](#-socket-events)
+- [Validation & Error Handling](#-validation--error-handling)
+- [Performance Optimizations](#-performance-optimizations)
+- [Security](#-security)
+- [Deployment](#-deployment)
+- [Testing](#-testing)
+- [Future Improvements](#-future-improvements)
+- [Author](#-author)
 
 ---
 
@@ -52,15 +62,15 @@ The platform follows a scalable full-stack architecture using React + TypeScript
 
 This project focuses heavily on:
 
-* Pixel-perfect frontend implementation
-* Production-grade folder architecture
-* API-driven design
-* Reusable component system
-* Scalable backend structure
-* Real-time communication
-* Clean state management
-* Type safety
-* Responsive UI/UX
+- Pixel-perfect frontend implementation
+- Production-grade folder architecture
+- API-driven design
+- Reusable component system
+- Scalable backend structure
+- Real-time communication
+- Clean state management
+- Type safety
+- Responsive UI/UX
 
 ---
 
@@ -70,46 +80,46 @@ This project focuses heavily on:
 
 ### Student Dashboard
 
-* View assignments
-* Track assignment status
-* Responsive assignment grid
-* Empty state handling
-* Real-time updates
-* Assignment filtering
-* Mobile responsive layout
+- View assignments
+- Track assignment status
+- Responsive assignment grid
+- Empty state handling
+- Real-time updates
+- Assignment filtering
+- Mobile responsive layout
 
 ### Upload Materials
 
-* Upload educational materials
-* Drag & drop support
-* File validation
-* Upload progress tracking
-* Material preview support
-* File type restrictions
+- Upload educational materials
+- Drag & drop support
+- File validation
+- Upload progress tracking
+- Material preview support
+- File type restrictions
 
 ### Sidebar Navigation
 
-* Fully responsive sidebar
-* Active route highlighting
-* School profile card
-* Mobile navigation support
-* Reusable navigation items
+- Fully responsive sidebar
+- Active route highlighting
+- School profile card
+- Mobile navigation support
+- Reusable navigation items
 
 ### Assignment Management
 
-* Assignment cards
-* Due dates
-* Status badges
-* Progress indicators
-* Subject categorization
-* Dynamic rendering
+- Assignment cards
+- Due dates
+- Status badges
+- Progress indicators
+- Subject categorization
+- Dynamic rendering
 
 ### Realtime Features
 
-* Live updates using Socket.io
-* Instant assignment synchronization
-* Upload notifications
-* Real-time UI refresh
+- Live updates using Socket.io
+- Instant assignment synchronization
+- Upload notifications
+- Real-time UI refresh
 
 ---
 
@@ -621,11 +631,11 @@ Protected API Access
 
 ```ts
 {
-  id: string
-  name: string
-  email: string
-  password: string
-  role: string
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  role: string;
 }
 ```
 
@@ -635,12 +645,12 @@ Protected API Access
 
 ```ts
 {
-  id: string
-  title: string
-  subject: string
-  status: string
-  dueDate: Date
-  createdBy: string
+  id: string;
+  title: string;
+  subject: string;
+  status: string;
+  dueDate: Date;
+  createdBy: string;
 }
 ```
 
@@ -650,11 +660,11 @@ Protected API Access
 
 ```ts
 {
-  id: string
-  title: string
-  fileUrl: string
-  uploadedBy: string
-  createdAt: Date
+  id: string;
+  title: string;
+  fileUrl: string;
+  uploadedBy: string;
+  createdAt: Date;
 }
 ```
 
@@ -703,11 +713,11 @@ Inner Pill: 56px
 
 ## Global State
 
-* User State
-* Authentication State
-* Assignment State
-* Material State
-* Socket State
+- User State
+- Authentication State
+- Assignment State
+- Material State
+- Socket State
 
 ---
 
@@ -729,19 +739,19 @@ Socket Synchronization
 
 ## Frontend Validation
 
-* Zod Schema Validation
-* Form Validation
-* File Validation
-* Input Sanitization
+- Zod Schema Validation
+- Form Validation
+- File Validation
+- Input Sanitization
 
 ---
 
 ## Backend Validation
 
-* Request Validation
-* JWT Validation
-* File Validation
-* Database Validation
+- Request Validation
+- JWT Validation
+- File Validation
+- Database Validation
 
 ---
 
@@ -749,22 +759,22 @@ Socket Synchronization
 
 ## Frontend
 
-* Lazy Loading
-* Code Splitting
-* Memoization
-* Optimized Re-renders
-* Reusable Components
-* Dynamic Imports
+- Lazy Loading
+- Code Splitting
+- Memoization
+- Optimized Re-renders
+- Reusable Components
+- Dynamic Imports
 
 ---
 
 ## Backend
 
-* Database Indexing
-* Optimized Queries
-* Caching
-* Async Processing
-* File Compression
+- Database Indexing
+- Optimized Queries
+- Caching
+- Async Processing
+- File Compression
 
 ---
 
@@ -772,13 +782,13 @@ Socket Synchronization
 
 ## Security Features
 
-* JWT Authentication
-* Password Hashing
-* CORS Protection
-* Input Sanitization
-* Environment Variable Protection
-* Rate Limiting
-* Secure File Uploads
+- JWT Authentication
+- Password Hashing
+- CORS Protection
+- Input Sanitization
+- Environment Variable Protection
+- Rate Limiting
+- Secure File Uploads
 
 ---
 
@@ -808,19 +818,19 @@ npm run build
 
 ## Frontend Testing
 
-* Component Testing
-* UI Testing
-* Responsive Testing
-* Form Validation Testing
+- Component Testing
+- UI Testing
+- Responsive Testing
+- Form Validation Testing
 
 ---
 
 ## Backend Testing
 
-* API Testing
-* Authentication Testing
-* Database Testing
-* File Upload Testing
+- API Testing
+- Authentication Testing
+- Database Testing
+- File Upload Testing
 
 ---
 
@@ -828,27 +838,27 @@ npm run build
 
 ## Future Scale Enhancements
 
-* Microservice Architecture
-* Redis Caching
-* CDN Integration
-* Queue Processing
-* Horizontal Scaling
-* Kubernetes Deployment
-* Load Balancing
+- Microservice Architecture
+- Redis Caching
+- CDN Integration
+- Queue Processing
+- Horizontal Scaling
+- Kubernetes Deployment
+- Load Balancing
 
 ---
 
 # 🔮 Future Improvements
 
-* AI-based Assignment Recommendations
-* Video Lectures Integration
-* AI Chat Assistant
-* Real-time Collaboration
-* Attendance Tracking
-* Analytics Dashboard
-* Notification System
-* Dark Mode
-* Role-Based Access Control
+- AI-based Assignment Recommendations
+- Video Lectures Integration
+- AI Chat Assistant
+- Real-time Collaboration
+- Attendance Tracking
+- Analytics Dashboard
+- Notification System
+- Dark Mode
+- Role-Based Access Control
 
 ---
 
@@ -874,10 +884,10 @@ Add upload page screenshot here
 
 ## Vamshi Kumar
 
-* Full Stack Developer
-* MERN Stack Developer
-* System Design Enthusiast
-* Backend & Cloud Focused Engineer
+- Full Stack Developer
+- MERN Stack Developer
+- System Design Enthusiast
+- Backend & Cloud Focused Engineer
 
 ### LinkedIn
 
@@ -889,16 +899,16 @@ Add upload page screenshot here
 
 This project demonstrates:
 
-* Production-grade architecture
-* Real-world scalable frontend structure
-* Strong backend fundamentals
-* API-first development
-* Reusable component system
-* Type-safe development
-* Professional UI implementation
-* Realtime communication architecture
-* Clean code principles
-* System design understanding
+- Production-grade architecture
+- Real-world scalable frontend structure
+- Strong backend fundamentals
+- API-first development
+- Reusable component system
+- Type-safe development
+- Professional UI implementation
+- Realtime communication architecture
+- Clean code principles
+- System design understanding
 
 ---
 
