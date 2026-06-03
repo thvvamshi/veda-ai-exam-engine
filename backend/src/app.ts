@@ -22,14 +22,15 @@ import uploadRoutes from "./routes/upload.routes";
 
 import pdfRoutes from "./routes/pdf.routes";
 
-
 const app = express();
 
 // CORS
 app.use(
   cors({
-    origin: "http://localhost:5173",
-
+    origin: [
+      "http://localhost:5173",
+      "https://veda-ai-exam-enginee.onrender.com",
+    ],
     credentials: true,
   }),
 );
